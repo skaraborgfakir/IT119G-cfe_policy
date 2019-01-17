@@ -1,10 +1,19 @@
+# -*-cfengine-*-
+
 bundle agent bind
 {
   meta:
       "tags" slist => { "autorun" };
 
+  packages:
+    DNS_server::
+      "bind9"
+	    policy => "present",
+    package_module => apt_get,
+	      mete => { "bind" };
+           
   reports:
-    verbose_mode::
+    verbose_mode|DEBUG::
       "$(this.bundle): Hello, this is an automatically loaded bundle";
 }
 
