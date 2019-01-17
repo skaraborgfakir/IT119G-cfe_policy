@@ -21,7 +21,7 @@ bundle agent bind
 
       
   reports:
-    verbose_mode|DEBUG|default:DEBUG:::
+    verbose_mode|DEBUG|default:DEBUG::
       "$(this.bundle): Hello, this is an automatically loaded bundle";
 }
 
