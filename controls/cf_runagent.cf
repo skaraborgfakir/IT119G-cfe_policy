@@ -16,7 +16,7 @@ body runagent control
 
     any::
 
-      hosts => { "127.0.0.1" };
+      hosts => { "127.0.0.1", "192.168.2.21", "192.168.2.22", "192.168.2.25" };
 
       # , "myhost.example.com:5308", ...
 
