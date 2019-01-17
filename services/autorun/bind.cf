@@ -5,15 +5,22 @@ bundle agent bind
   meta:
       "tags" slist => { "autorun" };
 
+  files:
+    DNS_server|default:DNS_server::
+      "/etc/bind9/named.conf.options.test"
+	    create => "true",
+      	      meta => { "bind" };
+
   packages:
-    DNS_server::
+    DNS_server|default:DNS_server::
       "bind9"
 	    policy => "present",
     package_module => apt_get,
-	      mete => { "bind" };
-           
+	      meta => { "bind" };
+
+      
   reports:
-    verbose_mode|DEBUG::
+    verbose_mode|DEBUG|default:DEBUG:::
       "$(this.bundle): Hello, this is an automatically loaded bundle";
 }
 
