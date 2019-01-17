@@ -25,7 +25,7 @@ bundle agent bind
       "$(this.bundle): Hello, this is an automatically loaded bundle";
 }
 
-body edit_line named_conf_local
+bundle edit_line named_conf_local
 {
   insert_lines:
       "
@@ -36,7 +36,7 @@ file \"/etc/bind9/zones/db.b18steni\";
 ";
 }
 
-body edit_line named_conf_options
+bundle edit_line named_conf_options
 {
   insert_lines:
       "
