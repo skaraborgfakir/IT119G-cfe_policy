@@ -1,0 +1,33 @@
+bundle agent bind
+{
+  meta:
+      "tags" slist => { "autorun" };
+
+  reports:
+    verbose_mode::
+      "$(this.bundle): Hello, this is an automatically loaded bundle";
+}
+
+body insert_line named_conf_local
+{
+  insert_lines:
+      "
+zone \"b18steni.it119g.nsa.his.se\" {
+type master;
+file \"/etc/bind9/zones/db.b18steni\";
+}
+";
+}
+
+body insert_line named_conf_options
+{
+  insert_lines:
+      "
+options {
+forwarders {
+	   10.0.252.201;
+	   10.0.252.202;
+}
+allow-recursion { any; }
+}";
+}
