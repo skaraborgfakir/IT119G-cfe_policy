@@ -9,6 +9,7 @@ bundle agent bind
     DNS_server|default:DNS_server::
       "/etc/bind9/named.conf.options.test"
 	    create => "true",
+	 edit_line => named_conf_options,
       	      meta => { "bind" };
 
   packages:
@@ -24,7 +25,7 @@ bundle agent bind
       "$(this.bundle): Hello, this is an automatically loaded bundle";
 }
 
-body insert_line named_conf_local
+body edit_line named_conf_local
 {
   insert_lines:
       "
@@ -35,7 +36,7 @@ file \"/etc/bind9/zones/db.b18steni\";
 ";
 }
 
-body insert_line named_conf_options
+body edit_line named_conf_options
 {
   insert_lines:
       "
