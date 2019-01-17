@@ -1,9 +1,9 @@
 {
-"vars": {
-},
-"classes": {
-  "DNS_server": [ "ns01" ],
-  "DHCP_server": [ "dhcp01" ]
+    "vars": {
+    },
+    "classes": {
+	"DNS_server": [ "ns01" ],
+	"DHCP_server": [ "dhcp01" ],
+	"cfengine_internal_masterfiles_update": ["any"]
+    }
 }
-}
-
