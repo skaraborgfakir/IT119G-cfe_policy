@@ -18,20 +18,31 @@ bundle agent dhcp
 	create => "true";
 
       "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache.test"
-	edit_line => dhcpd_conf,
-	create => "true";
+	create => "true",
+	edit_line => dhcpd_conf;
+
+      "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache.test"
+	perms => m("444"),
 
       "$(prefix)/etc/dhcp/dhcpd.conf.test"
 	create => "true",
 	template_method => "mustache",
 	edit_template => "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache.test";
 
+      "$(prefix)/etc/dhcp/dhcpd.conf.test"
+	perms => m("444");
+
   packages:
     DHCP_server::
       "isc-dhcp-server"
-	    policy => "present",
-    package_module => apt_get,
-	      meta => { "dhcp" };
+	policy => "present",
+	package_module => apt_get,
+	meta => { "dhcp" };
+
+  services:
+    !block_DHCP_server.DHCP_server::
+      "isc-dhcp-server"
+	service_policy => "enable";
 
   reports:
     verbose_mode|DEBUG|default:DEBUG::

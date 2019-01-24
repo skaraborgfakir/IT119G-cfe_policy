@@ -9,6 +9,7 @@
 	"cfengine_internal_masterfiles_update": ["any"],
 
 	"DNS_server":  [ "ns01" ],
-	"DHCP_server": [ "dhcp01" ]
+	"DHCP_server":   [ "dhcp01" ],
+	"block_DHCP_server": [ "dhcp01" ]
     }
 }
