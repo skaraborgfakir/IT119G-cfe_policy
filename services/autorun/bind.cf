@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 19:51:53 nsa>
+# Time-stamp: <2019-01-24 20:53:51 nsa>
 #
 
 bundle agent bind
@@ -9,7 +9,7 @@ bundle agent bind
       "tags" slist => { "autorun" };
 
   vars:
-    run_test_version::
+    !any.disable_DNS_server::
       "prefix"
 	string => "/var/cfengine/testings";
 
@@ -41,17 +41,26 @@ bundle agent bind
       "$(controlled_files).saved_dist_version"
 	perms => m("444");
 
-      "$(prefix)/etc/bind/named.conf.test"
+      #
+      # named.conf
+      #
+      "$(prefix)/etc/bind/named.conf"
 	create => "true",
 	edit_line => named_conf,
 	meta => { "bind" };
 
-      "$(prefix)/etc/bind/named.conf.options.test"
+      #
+      # named.conf.options
+      #
+      "$(prefix)/etc/bind/named.conf.options"
 	create => "true",
 	edit_line => named_conf_options,
 	meta => { "bind" };
 
-      "$(prefix)/etc/bind/named.conf.local.test"
+      #
+      # named.conf.local
+      #
+      "$(prefix)/etc/bind/named.conf.local"
 	create => "true",
 	edit_line => named_conf_local,
 	meta => { "bind" };
@@ -76,7 +85,13 @@ bundle agent bind
 bundle edit_line named_conf
 {
   insert_lines:
-      "// This is the primary configuration file for the BIND DNS server named.
+      "//
+// avsedd för {{vars.sys.fqhost}}
+//
+// cfe-regler från {{vars.sys.policy_hub}}
+// senast uppdatering av policy: {{sys.last_policy_update}}
+//
+// This is the primary configuration file for the BIND DNS server named.
 //
 // Please read /usr/share/doc/bind9/README.Debian.gz for information on the
 // structure of BIND configuration files in Debian, *BEFORE* you customize
@@ -95,7 +110,13 @@ include \"/etc/bind/named.conf.default-zones\";
 bundle edit_line named_conf_local
 {
   insert_lines:
-      "
+      "//
+// avsedd för {{vars.sys.fqhost}}
+//
+// cfe-regler från {{vars.sys.policy_hub}}
+// senast uppdatering av policy: {{sys.last_policy_update}}
+//
+
 zone \"b18steni.it119g.nsa.his.se\" {
 type master;
 file \"/etc/bind9/zones/db.b18steni\";
@@ -106,7 +127,13 @@ file \"/etc/bind9/zones/db.b18steni\";
 bundle edit_line named_conf_options
 {
   insert_lines:
-      "
+      "//
+// avsedd för {{vars.sys.fqhost}}
+//
+// cfe-regler från {{vars.sys.policy_hub}}
+// senast uppdatering av policy: {{sys.last_policy_update}}
+//
+
 acl my_computers { 192.168.0.0/16; 10.204.12.0/24; 10.204.20.0/24; };
 options {
 forwarders {

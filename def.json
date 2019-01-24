@@ -14,8 +14,11 @@
 
 	"DNS_server":  [ "ns01" ],
 	"DHCP_server":   [ "dhcp01" ],
+
+	"disable_DNS_server": [ "ns01" ],
+	"enable_DNS_server":  [ "notns01" ],
+
 	"disable_DHCP_server": [ "notdhcp01" ],
-	"enable_DHCP_server":  [ "dhcp01" ],
-	"block_DHCP_server": [ "dhcp01" ]
+	"enable_DHCP_server":  [ "dhcp01" ]
     }
 }
