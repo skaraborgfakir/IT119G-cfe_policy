@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 19:25:28 nsa>
+# Time-stamp: <2019-01-24 19:30:06 nsa>
 #
 
 bundle agent bind
@@ -34,7 +34,7 @@ bundle agent bind
 
     DNS_server::
       "$(controlled_files).saved_dist_version"
-	unless => fileexists("$(controlled_files)"),
+	unless => fileexists("$(controlled_files).saved_dist_version"),
 	copy_from => local_dcp("$(controlled_files)"),
 	comment => "save dist versionen";
 
