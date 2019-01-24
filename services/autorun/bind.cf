@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 20:57:37 nsa>
+# Time-stamp: <2019-01-24 20:58:37 nsa>
 #
 
 bundle agent bind
@@ -140,7 +140,7 @@ bundle edit_line named_conf_options
 acl my_computers { 192.168.0.0/16; 10.204.12.0/24; 10.204.20.0/24; };
 
 options {
-    directory "/var/cache/bind";
+    directory \"/var/cache/bind\";
     dnssec-validation auto;
 
     forwarders {
