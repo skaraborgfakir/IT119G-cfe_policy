@@ -1,0 +1,16 @@
+# -*-cfengine-*-
+#
+# Time-stamp: <2019-01-24 22:49:34 nsa>
+#
+
+bundle agent open_vm_tools
+{
+  meta:
+      "tags" slist => { "autorun" };
+
+  packages:
+    ubuntu::
+      "open-vm-tools"
+	policy => "present",
+	package_module => apt_get;
+}
