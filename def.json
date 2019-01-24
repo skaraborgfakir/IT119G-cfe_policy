@@ -12,7 +12,7 @@
 
 	"run_test_version": [ "any"],
 
-	"ubuntu_upgrade": [ "ubuntu" ],
+	"ubuntu_upgrade": [ "failubuntu" ],
 
 	"DNS_server":  [ "ns01" ],
 	"DHCP_server":   [ "dhcp01" ],
