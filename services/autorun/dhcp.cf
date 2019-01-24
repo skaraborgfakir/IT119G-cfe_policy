@@ -19,6 +19,7 @@ bundle agent dhcp
 
       "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache.test"
 	create => "true",
+	edit_defaults => empty,
 	edit_line => dhcpd_conf;
 
       "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache.test"
@@ -26,6 +27,7 @@ bundle agent dhcp
 
       "$(prefix)/etc/dhcp/dhcpd.conf.test"
 	create => "true",
+	edit_defaults => empty,
 	template_method => "mustache",
 	edit_template => "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache.test";
 
