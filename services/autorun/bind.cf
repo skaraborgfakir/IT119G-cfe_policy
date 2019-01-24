@@ -6,7 +6,7 @@ bundle agent bind
       "tags" slist => { "autorun" };
 
   files:
-    DNS_server|default:DNS_server::
+    DNS_server::
       "/etc/bind/named.conf"
 	    create => "true",
 	 edit_line => named_conf,

@@ -8,7 +8,7 @@
 	"services_autorun": [ "any" ],
 	"cfengine_internal_masterfiles_update": ["any"],
 
-	"DNS_server": [ "ns01" ],
+	"DNS_server":  [ "ns01" ],
 	"DHCP_server": [ "dhcp01" ]
     }
 }
