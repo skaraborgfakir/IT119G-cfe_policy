@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 21:36:44 nsa>
+# Time-stamp: <2019-01-24 21:40:56 nsa>
 #
 
 bundle agent bind
@@ -89,6 +89,20 @@ bundle agent bind
 	edit_template => "$(prefix)/etc/bind/named.conf.local.tmpl.mustache",
 	meta => { "bind" };
 
+      #
+      # named.conf.local
+      #
+      "/etc/bind/zones/db.b18steni.tmpl.mustache"
+	create => "true",
+	edit_defaults => empty,
+	edit_line => b18steni_zon;
+
+      "/etc/bind/zones/db.b18steni"
+	create => "true",
+	edit_defaults => empty,
+	template_method => "mustache",
+	edit_template => "/etc/bind/zones/db.b18steni.tmpl.mustache";
+
       "$(prefix)$(controlled_files)"
 	perms => mog("444", "root", "bind");
 
@@ -172,4 +186,12 @@ options {
     allow-recursion { my_computers; };
     allow-query { any; };
 };";
+}
+
+bundle edit_line b18steni_zon
+{
+  insert_lines:
+      "
+$TTL
+";
 }
