@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 21:35:13 nsa>
+# Time-stamp: <2019-01-24 21:36:44 nsa>
 #
 
 bundle agent bind
@@ -171,5 +171,5 @@ options {
 
     allow-recursion { my_computers; };
     allow-query { any; };
-}";
+};";
 }
