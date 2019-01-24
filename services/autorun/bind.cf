@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 19:31:31 nsa>
+# Time-stamp: <2019-01-24 19:51:53 nsa>
 #
 
 bundle agent bind
@@ -38,6 +38,9 @@ bundle agent bind
 	copy_from => local_dcp("$(controlled_files)"),
 	comment => "save dist versionen";
 
+      "$(controlled_files).saved_dist_version"
+	perms => m("444");
+
       "$(prefix)/etc/bind/named.conf.test"
 	create => "true",
 	edit_line => named_conf,
@@ -67,6 +70,7 @@ bundle agent bind
   reports:
     verbose_mode|DEBUG|default:DEBUG::
       "$(this.bundle): Hello, this is an automatically loaded bundle";
+      "$(this.bundle): prefix=''$(prefix)''";
 }
 
 bundle edit_line named_conf

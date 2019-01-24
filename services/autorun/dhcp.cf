@@ -71,6 +71,7 @@ bundle agent dhcp
   reports:
     verbose_mode|DEBUG|default:DEBUG::
       "$(this.bundle): Hello, this is an automatically loaded bundle";
+      "$(this.bundle): prefix=''$(prefix)''";
 }
 
 bundle edit_line dhcpd_conf
