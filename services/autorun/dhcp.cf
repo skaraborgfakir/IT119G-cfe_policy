@@ -10,7 +10,7 @@ bundle agent dhcp
 	string => "/var/cfengine/testings";
 
       "template_data"
-	data => readjson("$(this.promise_dirname)/autorun/hosts.json");
+	data => readjson("$(this.promise_dirname)/hosts.json");
 
   files:
     DHCP_server::
