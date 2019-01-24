@@ -126,14 +126,12 @@ log-facility local7;
 option domain-name-servers {{.}};
 {{/vars.dhcp.template_data.dns_nameserver}}
 
-subnet 192.168.1.128 netmask 255.255.255.128 {
-  range 192.168.1.130 192.168.1.191;
+subnet 192.168.1.0 netmask 255.255.255.0 {
+  range 192.168.1.65 192.168.1.126;
   option routers 192.168.1.1;
-}
-
-subnet 192.168.1.0 netmask 255.255.255.128 {
-  range 192.168.1.2 192.168.1.126;
-  option routers 192.168.1.1;
+{{#vars.dhcp.template_data.dns_nameserver}}
+  option domain-name-servers {{.}};
+{{/vars.dhcp.template_data.dns_nameserver}}
 }
 
 {{#vars.dhcp.template_data.mac_mappings}}
