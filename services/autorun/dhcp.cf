@@ -18,7 +18,7 @@ bundle agent dhcp
 	create => "true";
 
       "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache.test"
-	edit_line => dhclient_conf,
+	edit_line => dhcpd_conf,
 	create => "true";
 
       "$(prefix)/etc/dhcp/dhcpd.conf.test"
@@ -93,6 +93,14 @@ log-facility local7;
 #  option broadcast-address 10.254.239.31;
 #  option routers rtr-239-32-1.example.org;
 #}
+
+subnet 192.168.1.128 netmask 255.255.255.128 {
+  range 192.168.1.129 192.168.1.191;
+  option routers 192.168.1.1;
+{{#vars.dhcp.template_data.dns_nameserver}}
+  option domain-name-servers {{.}};
+{{/vars.dhcp.template_data.dns_nameserver}}
+}
 
 # A slightly different configuration for an internal subnet.
 #subnet 10.5.5.0 netmask 255.255.255.224 {

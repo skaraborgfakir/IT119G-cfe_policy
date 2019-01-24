@@ -8,5 +8,6 @@
 	{ "name": "ns01",        "ip_addr": "192.168.2.22", "use_dhcp": "notany"},
 	{ "name": "cfengine",    "ip_addr": "192.168.2.24", "use_dhcp": "notany"},
 	{ "name": "vcs",         "ip_addr": "192.168.2.25", "use_dhcp": "notany"}
-    ]
+    ],
+    "dns_nameserver": [ "192.168.2.22", "10.0.252.201" ]
 }
