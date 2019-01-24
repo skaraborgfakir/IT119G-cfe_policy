@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 21:52:23 nsa>
+# Time-stamp: <2019-01-24 21:59:49 nsa>
 #
 
 bundle agent bind
@@ -55,6 +55,7 @@ bundle agent bind
 	edit_defaults => empty,
 	template_method => "mustache",
 	edit_template => "$(prefix)/etc/bind/named.conf.tmpl.mustache",
+	classes => results("bundle", "bind9_config"),
 	meta => { "bind" };
 
       #
@@ -71,6 +72,7 @@ bundle agent bind
 	edit_defaults => empty,
 	template_method => "mustache",
 	edit_template => "$(prefix)/etc/bind/named.conf.options.tmpl.mustache",
+	classes => results("bundle", "bind9_config"),
 	meta => { "bind" };
 
       #
@@ -87,6 +89,7 @@ bundle agent bind
 	edit_defaults => empty,
 	template_method => "mustache",
 	edit_template => "$(prefix)/etc/bind/named.conf.local.tmpl.mustache",
+	classes => results("bundle", "bind9_config"),
 	meta => { "bind" };
 
       #
@@ -101,7 +104,9 @@ bundle agent bind
 	create => "true",
 	edit_defaults => empty,
 	template_method => "mustache",
-	edit_template => "/etc/bind/zones/db.b18steni.tmpl.mustache";
+	edit_template => "/etc/bind/zones/db.b18steni.tmpl.mustache",
+	classes => results("bundle", "bind9_zone_data"),
+	meta => { "bind" };
 
       "$(prefix)$(controlled_files)"
 	perms => mog("444", "root", "bind");
@@ -116,8 +121,25 @@ bundle agent bind
       "bind9"
 	policy => "present",
 	package_module => apt_get,
+	classes => results("bundle", "bind9_installed"),
 	meta => { "bind" };
 
+  services:
+    DNS_server::
+      "bind9"
+	ifvarclass => "bind9_installed_repaired",
+	service_policy => "enable";
+
+      "bind9"
+	ifvarclass => "bind9_config_repaired",
+	service_policy => "restart";
+
+  commands:
+    DNS_server::
+      "/usr/sbin/rndc"
+	args => "reload",
+	ifvarclass => "bind9_zone_data_repaired",
+	meta => {"bind"};
 
   reports:
     verbose_mode|DEBUG|default:DEBUG::
@@ -198,7 +220,7 @@ bundle edit_line b18steni_zon
   insert_lines:
       "
 $TTL 10
-@ IN A SOA ns01 stefan.{{vars.def.domain}} (
+@ IN A SOA ns01 stefan.{{vars.def.domain}}. (
     2019012401 ; serial
     30m       ;
     3m ;
