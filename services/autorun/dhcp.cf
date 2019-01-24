@@ -138,6 +138,9 @@ subnet 192.168.1.0 netmask 255.255.255.0 {
 host {{name}} {
    hardware ethernet {{mac_addr}};
    fixed-address {{ip_addr}};
+{{#vars.dhcp.template_data.dns_nameserver}}
+   option domain-name-servers {{.}};
+{{/vars.dhcp.template_data.dns_nameserver}}
 }
 {{/vars.dhcp.template_data.mac_mappings}}
 ";
