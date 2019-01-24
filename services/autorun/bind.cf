@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 17:24:14 nsa>
+# Time-stamp: <2019-01-24 17:29:39 nsa>
 #
 
 bundle agent bind
@@ -13,6 +13,10 @@ bundle agent bind
 	string => "/var/cfengine/testings";
 
   files:
+    DNS_server::
+      "$(prefix)/."
+	create => "true";
+
     DNS_server::
       "$(prefix)/etc/bind/named.conf.test"
 	create => "true",
