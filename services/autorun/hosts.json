@@ -1,0 +1,12 @@
+{
+    "hosts":
+    [
+	{ "name": "pc01",        "ip_addr": "192.168.1.11", "use_dhcp": "any"},
+	{ "name": "pc02",        "ip_addr": "192.168.1.12", "use_dhcp": "any"},
+	{ "name": "dhcp01",      "ip_addr": "192.168.1.21", "use_dhcp": "notany"},
+	{ "name": "webserver01", "ip_addr": "192.168.2.21", "use_dhcp": "notany"},
+	{ "name": "ns01",        "ip_addr": "192.168.2.22", "use_dhcp": "notany"},
+	{ "name": "cfengine",    "ip_addr": "192.168.2.24", "use_dhcp": "notany"},
+	{ "name": "vcs",         "ip_addr": "192.168.2.25", "use_dhcp": "notany"},
+    ]
+}

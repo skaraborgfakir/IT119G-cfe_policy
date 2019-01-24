@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 17:29:39 nsa>
+# Time-stamp: <2019-01-24 17:37:40 nsa>
 #
 
 bundle agent bind
@@ -80,7 +80,7 @@ bundle edit_line named_conf_options
 {
   insert_lines:
       "
-acl my_computers { 192.168.0.0/16; 10.204.20.0/24 };
+acl my_computers { 192.168.0.0/16; 10.204.12.0/24; 10.204.20.0/24; };
 options {
 forwarders {
 	   10.0.252.201;
