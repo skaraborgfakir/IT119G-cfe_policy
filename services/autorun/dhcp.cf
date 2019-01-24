@@ -65,8 +65,8 @@ bundle agent dhcp
 	create => "true",
 	edit_defaults => empty,
 	template_method => "mustache",
-	edit_template => "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache";
-
+	edit_template => "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache",
+	classes => results("dhcpd_conf_changed");
 
       "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache" perms => m("444");
       "$(prefix)/etc/dhcp/dhcpd.conf"               perms => m("444");
@@ -82,6 +82,10 @@ bundle agent dhcp
     enable_DHCP_server.DHCP_server::
       "isc-dhcp-server"
 	service_policy => "enable";
+
+    enable_DHCP_server.DHCP_server.dhcpd_conf_changed_repaired::
+      "isc-dhcp-server"
+	service_policy => "restart";
 
     disable_DHCP_server.DHCP_server::
       "isc-dhcp-server"
@@ -192,7 +196,7 @@ subnet 192.168.1.128 netmask 255.255.255.128 {
 
 {{#vars.dhcp.template_data.mac_mappings}}
 host {{name}} {
-   hardware {{mac_addr}};
+   hardware ethernet {{mac_addr}};
    fixed-address {{ip_addr}};
 }
 {{/vars.dhcp.template_data.mac_mappings}}
