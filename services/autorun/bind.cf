@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 19:30:06 nsa>
+# Time-stamp: <2019-01-24 19:31:31 nsa>
 #
 
 bundle agent bind
@@ -52,6 +52,9 @@ bundle agent bind
 	create => "true",
 	edit_line => named_conf_local,
 	meta => { "bind" };
+
+      "$(prefix)$(controlled_files)"
+	perms => m("444");
 
   packages:
     DNS_server::
