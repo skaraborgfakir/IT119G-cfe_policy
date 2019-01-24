@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 20:53:51 nsa>
+# Time-stamp: <2019-01-24 20:57:37 nsa>
 #
 
 bundle agent bind
@@ -46,6 +46,7 @@ bundle agent bind
       #
       "$(prefix)/etc/bind/named.conf"
 	create => "true",
+	edit_defaults => empty,
 	edit_line => named_conf,
 	meta => { "bind" };
 
@@ -54,6 +55,7 @@ bundle agent bind
       #
       "$(prefix)/etc/bind/named.conf.options"
 	create => "true",
+	edit_defaults => empty,
 	edit_line => named_conf_options,
 	meta => { "bind" };
 
@@ -62,6 +64,7 @@ bundle agent bind
       #
       "$(prefix)/etc/bind/named.conf.local"
 	create => "true",
+	edit_defaults => empty,
 	edit_line => named_conf_local,
 	meta => { "bind" };
 
@@ -135,12 +138,20 @@ bundle edit_line named_conf_options
 //
 
 acl my_computers { 192.168.0.0/16; 10.204.12.0/24; 10.204.20.0/24; };
+
 options {
-forwarders {
+    directory "/var/cache/bind";
+    dnssec-validation auto;
+
+    forwarders {
 	   10.0.252.201;
 	   10.0.252.202;
-}
-allow-recursion { my_computers; };
-allow-query { any; };
+    }
+
+    listen-on-v6 { any; };
+    auth-nxdomain no;    # conform to RFC1035
+
+    allow-recursion { my_computers; };
+    allow-query { any; };
 }";
 }
