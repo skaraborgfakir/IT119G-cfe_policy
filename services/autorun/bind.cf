@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 21:59:49 nsa>
+# Time-stamp: <2019-01-24 22:04:18 nsa>
 #
 
 bundle agent bind
@@ -220,14 +220,13 @@ bundle edit_line b18steni_zon
   insert_lines:
       "
 $TTL 10
-@ IN A SOA ns01 stefan.{{vars.def.domain}}. (
+@ IN SOA ns01 stefan.{{vars.def.domain}}. (
     2019012401 ; serial
     30m       ;
     3m ;
     2w ;
     1h )
-
-    IN NS ns01
+	IN NS ns01
 
 {{#vars.bind.template_data.hosts}}
 {{name}} IN A  {{ip_addr}}
