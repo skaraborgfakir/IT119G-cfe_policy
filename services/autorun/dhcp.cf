@@ -127,7 +127,7 @@ subnet 192.168.1.128 netmask 255.255.255.128 {
 
 {{#vars.dhcp.template_data.mac_mappings}}
 host {{name}} {
-   hardware {{mac_addr}};
+   hardware ethernet {{mac_addr}};
    fixed-address {{ip_addr}};
 }
 {{/vars.dhcp.template_data.mac_mappings}}
