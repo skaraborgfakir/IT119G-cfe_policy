@@ -244,6 +244,10 @@ bundle edit_line default_isc_dhcp_server
 {
   insert_lines:
       "#
+# avsedd för {{vars.sys.fqhost}}
+#
+# cfe-regler från {{vars.sys.policy_hub}}
+#
 # Defaults for isc-dhcp-server initscript
 # sourced by /etc/init.d/isc-dhcp-server
 # installed at /etc/default/isc-dhcp-server by the maintainer scripts
@@ -261,10 +265,11 @@ bundle edit_line default_isc_dhcp_server
 # Additional options to start dhcpd with.
 #	Don't use options -cf or -pf here; use DHCPD_CONF/ DHCPD_PID instead
 #OPTIONS=\"\"
+OPTIONS={{vars.dhcp.template_data.dhcp_options}}
 
 # On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
-#	Separate multiple interfaces with spaces, e.g. "eth0 eth1".
-INTERFACES=\"\"
-
+#	Separate multiple interfaces with spaces, e.g. \"eth0 eth1\".
+#INTERFACES=\"\"
+INTERFACES={{vars.dhcp.template_data.dhcp_listen_iface}}
 ";
 }
