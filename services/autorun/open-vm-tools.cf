@@ -1,12 +1,20 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 22:49:34 nsa>
+# Time-stamp: <2019-01-24 22:55:17 nsa>
 #
 
 bundle agent open_vm_tools
 {
   meta:
       "tags" slist => { "autorun" };
+
+  services:
+    ubuntu::
+      "open-vm-tools"
+	service_policy => "start";
+
+      "open-vm-tools"
+	service_policy => "enable";
 
   packages:
     ubuntu::
