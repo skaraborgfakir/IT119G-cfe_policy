@@ -13,7 +13,7 @@
 
     "mac_mappings": [
 	{ "name": "pc01", "ip_addr": "192.168.1.11", "mac_addr": "00:50:56:36:16:67"},
-	{ "name": "pc02", "ip_addr": "192.168.1.12", "mac_addr": "00:50:56:68:81:a4"}
+	{ "name": "pc02", "ip_addr": "192.168.1.12", "mac_addr": "00:50:56:28:81:a4"}
     ],
     "dhcp_options": "",
     "dhcp_listen_iface": "ens160"
