@@ -1,8 +1,10 @@
 {
     "vars": {
-	"acl": [ "127.0.0.1",  "192.168.1.0/24", "192.168.2.0/24" ],
-	"control_server_allowusers_policy_server":     [ "root", "datakom" ],
-	"control_server_allowusers_non_policy_server": [ "root", "datakom" ]
+	"acl":                                         [ "127.0.0.1",  "192.168.1.0/24", "192.168.2.0/24"],
+	"control_server_allowusers_policy_server":     [ "root", "datakom"],
+	"control_server_allowusers_non_policy_server": [ "root", "datakom"],
+	"dns_nameserver":                              [ "192.168.2.22", "10.0.252.201"],
+	"domain":                                      "b18steni.it119g.nsa.his.se"
     },
     "classes": {
 	"services_autorun": [ "any" ],

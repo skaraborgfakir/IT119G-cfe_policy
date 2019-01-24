@@ -52,9 +52,7 @@ bundle agent dhcp
 bundle edit_line dhcpd_conf
 {
   insert_lines:
-      "// This is the primary configuration file for the BIND DNS server named.
-//
-#
+      "#
 # Sample configuration file for ISC dhcpd for Debian
 #
 # Attention: If /etc/ltsp/dhcpd.conf exists, that will be used as
@@ -69,15 +67,16 @@ bundle edit_line dhcpd_conf
 ddns-update-style none;
 
 # option definitions common to all supported networks...
-option domain-name \"example.org\";
-option domain-name-servers ns1.example.org, ns2.example.org;
+#option domain-name \"example.org\";
+option domain-name \"{{vars.def.domain}}\";
+#option domain-name-servers ns1.example.org, ns2.example.org;
 
 default-lease-time 600;
 max-lease-time 7200;
 
 # If this DHCP server is the official DHCP server for the local
 # network, the authoritative directive should be uncommented.
-#authoritative;
+authoritative;
 
 # Use this to send dhcp log messages to a different log file (you also
 # have to hack syslog.conf to complete the redirection).
@@ -112,6 +111,13 @@ subnet 192.168.1.128 netmask 255.255.255.128 {
   option domain-name-servers {{.}};
 {{/vars.dhcp.template_data.dns_nameserver}}
 }
+
+{{#vars.dhcp.template_data.mac_mappings}}
+host {{name}} {
+   hardware {{mac_addr}};
+   fixed-address {{ip_addr}};
+}
+{{/vars.dhcp.template_data.mac_mappings}}
 
 # A slightly different configuration for an internal subnet.
 #subnet 10.5.5.0 netmask 255.255.255.224 {
