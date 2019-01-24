@@ -1,4 +1,7 @@
 # -*-cfengine-*-
+#
+# Time-stamp: <2019-01-24 17:11:56 nsa>
+#
 
 bundle agent bind
 {
@@ -8,28 +11,28 @@ bundle agent bind
   files:
     DNS_server::
       "/etc/bind/named.conf"
-	    create => "true",
-	 edit_line => named_conf,
-      	      meta => { "bind" };
+	create => "true",
+	edit_line => named_conf,
+	meta => { "bind" };
 
       "/etc/bind/named.conf.options.test"
-	    create => "true",
-	 edit_line => named_conf_options,
-      	      meta => { "bind" };
+	create => "true",
+	edit_line => named_conf_options,
+	meta => { "bind" };
 
       "/etc/bind/named.conf.local.test"
-	    create => "true",
-	 edit_line => named_conf_local,
-      	      meta => { "bind" };
+	create => "true",
+	edit_line => named_conf_local,
+	meta => { "bind" };
 
   packages:
-    DNS_server|default:DNS_server::
+    DNS_server::
       "bind9"
-	    policy => "present",
-    package_module => apt_get,
-	      meta => { "bind" };
+	policy => "present",
+	package_module => apt_get,
+	meta => { "bind" };
 
-      
+
   reports:
     verbose_mode|DEBUG|default:DEBUG::
       "$(this.bundle): Hello, this is an automatically loaded bundle";
@@ -40,8 +43,8 @@ bundle edit_line named_conf
   insert_lines:
       "// This is the primary configuration file for the BIND DNS server named.
 //
-// Please read /usr/share/doc/bind9/README.Debian.gz for information on the 
-// structure of BIND configuration files in Debian, *BEFORE* you customize 
+// Please read /usr/share/doc/bind9/README.Debian.gz for information on the
+// structure of BIND configuration files in Debian, *BEFORE* you customize
 // this configuration file.
 //
 // If you are just adding zones, please do that in /etc/bind/named.conf.local
@@ -77,4 +80,3 @@ allow-recursion { my_computers; };
 allow-query { any; };
 }";
 }
-
