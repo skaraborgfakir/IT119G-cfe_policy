@@ -17,6 +17,11 @@ bundle agent dhcp
       "$(prefix)/."
 	create => "true";
 
+      "/etc/dhcp/dhcpd.conf.saved_dist_version"
+	unless => fileexists("/etc/dhcp/dhcpd.conf.saved_dist_version"),
+	copy_from => local_dcp("/etc/dhcp/dhcpd.conf"),
+	comment => "save dist versionen";
+
       "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache.test"
 	create => "true",
 	edit_defaults => empty,

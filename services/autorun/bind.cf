@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 17:54:05 nsa>
+# Time-stamp: <2019-01-24 19:25:28 nsa>
 #
 
 bundle agent bind
@@ -9,11 +9,23 @@ bundle agent bind
       "tags" slist => { "autorun" };
 
   vars:
+    run_test_version::
       "prefix"
 	string => "/var/cfengine/testings";
 
+    any::
+      "prefix"
+	string => "",
+	unless => isvariable("prefix");
+
       "template_data"
 	data => readjson("$(this.promise_dirname)/hosts.json");
+
+      "controlled_files"
+	slist => { "/etc/bind/named.conf",
+		   "/etc/bind/named.conf.local",
+		   "/etc/bind/named.conf.options",
+		   "/etc/bind/named.conf.default-zones"};
 
   files:
     DNS_server::
@@ -21,6 +33,11 @@ bundle agent bind
 	create => "true";
 
     DNS_server::
+      "$(controlled_files).saved_dist_version"
+	unless => fileexists("$(controlled_files)"),
+	copy_from => local_dcp("$(controlled_files)"),
+	comment => "save dist versionen";
+
       "$(prefix)/etc/bind/named.conf.test"
 	create => "true",
 	edit_line => named_conf,
