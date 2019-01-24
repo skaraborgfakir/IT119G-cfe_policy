@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 21:48:01 nsa>
+# Time-stamp: <2019-01-24 21:52:23 nsa>
 #
 
 bundle agent bind
@@ -159,7 +159,7 @@ bundle edit_line named_conf_local
 
 zone \"b18steni.it119g.nsa.his.se\" {
 type master;
-file \"/etc/bind9/zones/db.b18steni\";
+file \"/etc/bind/zones/db.b18steni\";
 };
 ";
 }
@@ -198,7 +198,7 @@ bundle edit_line b18steni_zon
   insert_lines:
       "
 $TTL 10
-@ IN A SOA ns01 stefan.{{vars.domain}} (
+@ IN A SOA ns01 stefan.{{vars.def.domain}} (
     2019012401 ; serial
     30m       ;
     3m ;
