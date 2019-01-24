@@ -11,6 +11,10 @@ bundle agent dhcp
 	string => "/var/cfengine/testings";
 
     any::
+      "prefix"
+	string => "";
+
+    any::
       "template_data"
 	data => readjson("$(this.promise_dirname)/hosts.json");
 
