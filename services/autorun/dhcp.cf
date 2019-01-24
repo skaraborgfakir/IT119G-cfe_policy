@@ -6,9 +6,11 @@ bundle agent dhcp
       "tags" slist => { "autorun" };
 
   vars:
+    !any::
       "prefix"
 	string => "/var/cfengine/testings";
 
+    any::
       "template_data"
 	data => readjson("$(this.promise_dirname)/hosts.json");
 
