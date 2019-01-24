@@ -74,12 +74,13 @@ authoritative;
 # have to hack syslog.conf to complete the redirection).
 log-facility local7;
 
+{{#vars.dhcp.template_data.dns_nameserver}}
+option domain-name-servers {{.}};
+{{/vars.dhcp.template_data.dns_nameserver}}
+
 subnet 192.168.1.128 netmask 255.255.255.128 {
   range 192.168.1.129 192.168.1.191;
   option routers 192.168.1.1;
-{{#vars.dhcp.template_data.dns_nameserver}}
-  option domain-name-servers {{.}};
-{{/vars.dhcp.template_data.dns_nameserver}}
 }
 
 {{#vars.dhcp.template_data.mac_mappings}}
