@@ -40,9 +40,13 @@ bundle agent dhcp
 	meta => { "dhcp" };
 
   services:
-    !block_DHCP_server.DHCP_server::
+    !disable_DHCP_server.DHCP_server::
       "isc-dhcp-server"
 	service_policy => "enable";
+
+    disable_DHCP_server.DHCP_server::
+      "isc-dhcp-server"
+	service_policy => "disable";
 
   reports:
     verbose_mode|DEBUG|default:DEBUG::
