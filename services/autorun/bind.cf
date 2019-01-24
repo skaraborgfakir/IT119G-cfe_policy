@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-24 17:11:56 nsa>
+# Time-stamp: <2019-01-24 17:24:14 nsa>
 #
 
 bundle agent bind
@@ -8,19 +8,23 @@ bundle agent bind
   meta:
       "tags" slist => { "autorun" };
 
+  vars:
+      "prefix"
+	string => "/var/cfengine/testings";
+
   files:
     DNS_server::
-      "/etc/bind/named.conf"
+      "$(prefix)/etc/bind/named.conf.test"
 	create => "true",
 	edit_line => named_conf,
 	meta => { "bind" };
 
-      "/etc/bind/named.conf.options.test"
+      "$(prefix)/etc/bind/named.conf.options.test"
 	create => "true",
 	edit_line => named_conf_options,
 	meta => { "bind" };
 
-      "/etc/bind/named.conf.local.test"
+      "$(prefix)/etc/bind/named.conf.local.test"
 	create => "true",
 	edit_line => named_conf_local,
 	meta => { "bind" };
@@ -52,6 +56,8 @@ bundle edit_line named_conf
 include \"/etc/bind/named.conf.options\";
 include \"/etc/bind/named.conf.local\";
 include \"/etc/bind/named.conf.default-zones\";
+// Please read /usr/share/doc/bind9/README.Debian.gz for information on the
+// structure of BIND configuration files in Debian, *BEFORE* you customize
 ";
 }
 
