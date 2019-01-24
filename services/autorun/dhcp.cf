@@ -17,6 +17,9 @@ bundle agent dhcp
       "$(prefix)/."
 	create => "true";
 
+      #
+      # spara undan dist-versionen av filerna
+      #
       "/etc/dhcp/dhcpd.conf.saved_dist_version"
 	unless => fileexists("/etc/dhcp/dhcpd.conf.saved_dist_version"),
 	copy_from => local_dcp("/etc/dhcp/dhcpd.conf"),
@@ -27,21 +30,30 @@ bundle agent dhcp
 	copy_from => local_dcp("/etc/default/isc-dhcp-server"),
 	comment => "save dist versionen";
 
-      "$(prefix)/etc/default/isc-dhcp-server"
+      #
+      # etc/default/isc-dhcp-server
+      #
+      "$(prefix)/etc/default/isc-dhcp-server.tmpl.mustache"
 	create => "true",
 	edit_defaults => empty,
 	edit_line => default_isc_dhcp_server;
 
       "$(prefix)/etc/default/isc-dhcp-server"
-	perms => m("444");
+	create => "true",
+	edit_defaults => empty,
+	template_method => "mustache",
+	edit_template => "$(prefix)/etc/default/isc-dhcp-server.tmpl.mustache";
 
+      "$(prefix)/etc/default/isc-dhcp-server.tmpl.mustache" perms => m("444");
+      "$(prefix)/etc/default/isc-dhcp-server"               perms => m("444");
+
+      #
+      # etcd/dhcp/dhcpd.conf
+      #
       "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache"
 	create => "true",
 	edit_defaults => empty,
 	edit_line => dhcpd_conf;
-
-      "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache"
-	perms => m("444");
 
       "$(prefix)/etc/dhcp/dhcpd.conf"
 	create => "true",
@@ -49,8 +61,9 @@ bundle agent dhcp
 	template_method => "mustache",
 	edit_template => "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache";
 
-      "$(prefix)/etc/dhcp/dhcpd.conf"
-	perms => m("444");
+
+      "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache" perms => m("444");
+      "$(prefix)/etc/dhcp/dhcpd.conf"               perms => m("444");
 
   packages:
     DHCP_server::
