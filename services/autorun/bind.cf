@@ -9,7 +9,7 @@ bundle agent bind
     DNS_server::
       "/etc/bind/named.conf"
 	    create => "true",
-	 edit_line => named_conf,
+	 edit_line => named_conf
       	      meta => { "bind" };
 
       "/etc/bind/named.conf.options.test"
