@@ -22,7 +22,7 @@ bundle agent dhcp
 	edit_line => dhcpd_conf;
 
       "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache.test"
-	perms => m("444"),
+	perms => m("444");
 
       "$(prefix)/etc/dhcp/dhcpd.conf.test"
 	create => "true",
