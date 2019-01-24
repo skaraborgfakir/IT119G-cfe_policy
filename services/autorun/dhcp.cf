@@ -66,7 +66,7 @@ bundle agent dhcp
 	edit_defaults => empty,
 	template_method => "mustache",
 	edit_template => "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache",
-	classes => results("dhcpd_conf_changed");
+	classes => results("bundle", "dhcpd_conf_changed");
 
       "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache" perms => m("444");
       "$(prefix)/etc/dhcp/dhcpd.conf"               perms => m("444");
