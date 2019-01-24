@@ -101,6 +101,12 @@ bundle edit_line dhcpd_conf
 {
   insert_lines:
       "#
+# avsedd för {{vars.sys.fqhost}}
+#
+# cfe-regler från {{vars.sys.policy_hub}}
+# senast uppdatering av policy: {{sys.last_policy_update}}
+#
+
 ddns-update-style none;
 
 option domain-name \"{{vars.def.domain}}\";
