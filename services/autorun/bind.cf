@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 16:21:07 nsa>
+# Time-stamp: <2019-01-29 16:25:02 nsa>
 #
 
 bundle agent bind
@@ -124,6 +124,7 @@ bundle agent bind
       "$(prefix)$(controlled_files)"              perms => mog("444", "root", "bind");
       "/etc/bind/zones/db.b18steni.tmpl.mustache" perms => mog("444", "root", "bind");
       "/etc/bind/zones/db.b18steni"               perms => mog("444", "root", "bind");
+      "/etc/bind/zones/db.b18steni_192_rev"       perms => mog("444", "root", "bind");
 
   packages:
     DNS_server::
