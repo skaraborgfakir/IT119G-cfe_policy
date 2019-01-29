@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 14:31:40 nsa>
+# Time-stamp: <2019-01-29 14:36:06 nsa>
 #
 
 bundle agent bind
@@ -108,13 +108,9 @@ bundle agent bind
 	classes => results("bundle", "bind9_zone_data"),
 	meta => { "bind" };
 
-      "$(prefix)$(controlled_files)"
-	perms => mog("444", "root", "bind");
-
-      "/etc/bind/zones/db.b18steni.tmpl.mustache"
-	perms => mog("444", "root", "bind");
-      "/etc/bind/zones/db.b18steni"
-	perms => mog("444", "root", "bind");
+      "$(prefix)$(controlled_files)"              perms => mog("444", "root", "bind");
+      "/etc/bind/zones/db.b18steni.tmpl.mustache" perms => mog("444", "root", "bind");
+      "/etc/bind/zones/db.b18steni"               perms => mog("444", "root", "bind");
 
   packages:
     DNS_server::
@@ -149,7 +145,6 @@ bundle agent bind
   reports:
     verbose_mode|DEBUG|default:DEBUG::
       "$(this.bundle): Hello, this is an automatically loaded bundle";
-      "$(this.bundle): prefix=''$(prefix)''";
 
     ns01.verbose_mode|ns01.DEBUG|ns01.default:DEBUG::
       "$(this.bundle): named är osynlig" ifvarclass => "bind9_proc_missing";

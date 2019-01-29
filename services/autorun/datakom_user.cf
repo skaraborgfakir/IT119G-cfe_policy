@@ -1,0 +1,33 @@
+# -*-cfengine-*-
+#
+# Time-stamp: <2019-01-29 15:06:38 nsa>
+#
+
+bundle agent datakom_user
+{
+  meta:
+      "tags" slist => { "autorun" };
+
+  classes:
+      "datakom_group_exists"
+	expression => groupexists("datakom");
+
+  commands:
+      "groupadd"
+	args => "datakom",
+      unless => "datakom_group_exists";
+
+  users:
+      "datakom"
+	policy => "present",
+	group_primary => "datakom",
+	password =>
+	description => "labanvändare/student",
+	ifvarclass => "datakom_group_exists";
+}
+
+body password datakom_password
+{
+	format => "hash";
+	data => "$6$4GpnKOl6$c3P.vvvlSfek5msB7WntqvB5fNAFWoOWzMU03vQMwxkirw.brqjAJ/6w7uq0ahXuBr6W05GEXu8LejsrWN4G/1";
+}
