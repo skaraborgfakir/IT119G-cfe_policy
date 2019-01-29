@@ -10,10 +10,9 @@
 	"services_autorun": [ "any" ],
 	"cfengine_internal_masterfiles_update": ["any"],
 
-	"run_test_version": [ "any"],
-
-	"ubuntu_upgrade": [ "ubuntu" ],
 	"apt_get_upgrade_disabled": [ "any" ],
+
+	"run_test_version": [ "any"],
 
 	"DNS_server":  [ "ns01" ],
 	"DHCP_server":   [ "dhcp01" ],

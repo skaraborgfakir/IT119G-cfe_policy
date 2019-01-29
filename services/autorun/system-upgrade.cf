@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 13:22:37 nsa>
+# Time-stamp: <2019-01-29 13:30:03 nsa>
 #
 
 bundle agent system_upgrade
@@ -9,7 +9,7 @@ bundle agent system_upgrade
       "tags" slist => { "autorun" };
 
   commands:
-    ubuntu.ubuntu_upgrade::
+    ubuntu::
       "/usr/bin/apt-get"
 	args =>"update",
 	unless => "apt_get_upgrade_disabled";
