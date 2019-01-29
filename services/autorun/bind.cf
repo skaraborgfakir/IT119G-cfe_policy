@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 14:36:06 nsa>
+# Time-stamp: <2019-01-29 16:21:07 nsa>
 #
 
 bundle agent bind
@@ -108,6 +108,19 @@ bundle agent bind
 	classes => results("bundle", "bind9_zone_data"),
 	meta => { "bind" };
 
+      "/etc/bind/zones/db.b18steni_192_rev.tmpl.mustache"
+	create => "true",
+	edit_defaults => empty,
+	edit_line => b18steni_192_rev_zon;
+
+      "/etc/bind/zones/db.b18steni_192_rev"
+	create => "true",
+	edit_defaults => empty,
+	template_method => "mustache",
+	edit_template => "/etc/bind/zones/db.b18steni_192_rev.tmpl.mustache",
+	classes => results("bundle", "bind9_zone_data"),
+	meta => { "bind" };
+
       "$(prefix)$(controlled_files)"              perms => mog("444", "root", "bind");
       "/etc/bind/zones/db.b18steni.tmpl.mustache" perms => mog("444", "root", "bind");
       "/etc/bind/zones/db.b18steni"               perms => mog("444", "root", "bind");
@@ -194,6 +207,11 @@ zone \"b18steni.it119g.nsa.his.se\" {
 type master;
 file \"/etc/bind/zones/db.b18steni\";
 };
+
+zone \"168.192.in-addr.arpa\" {
+type master;
+file \"/etc/bind/zones/db.b18steni_192_rev\";
+};
 ";
 }
 
@@ -242,5 +260,25 @@ $TTL 10
 {{#vars.bind.template_data.dns_resolvable_hosts}}
 {{key}} IN {{type}}  {{data}}
 {{/vars.bind.template_data.dns_resolvable_hosts}}
+";
+}
+
+bundle edit_line b18steni_192_rev_zon
+{
+  insert_lines:
+      "
+$TTL 10
+@ IN SOA ns01 stefan.{{vars.def.domain}}. (
+    2019012901 ; serial
+    30m       ;
+    3m ;
+    2w ;
+    1h )
+	IN NS ns01
+
+192.168.1.11 IN PTR pc01.b18steni.it119g.nsa.his.se.
+192.168.1.12 IN PTR pc02.b18steni.it119g.nsa.his.se.
+
+192.168.1.21 IN PTR dhcp01.b18steni.it119g.nsa.his.se.
 ";
 }
