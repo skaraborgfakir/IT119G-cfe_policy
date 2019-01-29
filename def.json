@@ -21,6 +21,8 @@
 	"enable_DNS_server":  [ "notns01" ],
 
 	"disable_DHCP_server": [ "notdhcp01" ],
-	"enable_DHCP_server":  [ "dhcp01" ]
+	"enable_DHCP_server":  [ "dhcp01" ],
+
+	"WWW_services": ["webserver01"]
     }
 }

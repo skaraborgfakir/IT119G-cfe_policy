@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 15:18:20 nsa>
+# Time-stamp: <2019-01-29 15:21:44 nsa>
 #
 # garantera apache
 #
@@ -11,13 +11,13 @@ bundle agent www_server
       "tags" slist => { "autorun" };
 
   packages:
-    wwwserver01::
+    WWW_services::
       "apache2-bin"
 	policy => "present",
 	classes => results("apache_installation");
 
   services:
-    !any.wwwserver01::
+    !any.WWW_services::
       "isc-dhcp-server"
 	service_policy => "enable",
 	ifvarclass => "apache_installation_repaired";
