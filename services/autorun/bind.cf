@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 13:47:37 nsa>
+# Time-stamp: <2019-01-29 13:53:58 nsa>
 #
 
 bundle agent bind
@@ -228,10 +228,8 @@ $TTL 10
     1h )
 	IN NS ns01
 
-{{#vars.bind.template_data.hosts}}
-{{#dns_resolvable}}
-{{name}} IN A  {{ip_addr}}
-{{/dns_resolvable}}
-{{/vars.bind.template_data.hosts}}
+{{#vars.bind.template_data.dns_resolvable_hosts}}
+{{key}} IN {{type}}  {{data}}
+{{/vars.bind.template_data.dns_resolvable_hosts}}
 ";
 }
