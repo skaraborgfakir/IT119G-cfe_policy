@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 14:00:45 nsa>
+# Time-stamp: <2019-01-29 14:26:17 nsa>
 #
 
 bundle agent bind
@@ -124,14 +124,19 @@ bundle agent bind
 	classes => results("bundle", "bind9_installed"),
 	meta => { "bind" };
 
+  processes:
+      "/usr/sbin/named"
+	process_owner => {"bind"},
+	restart_class => "bind9_proc_missing";
+
   services:
     DNS_server::
       "bind9"
-	ifvarclass => "bind9_installed_repaired",
+	ifvarclass => "bind9_proc_missing|bind9_installed_repaired",
 	service_policy => "enable";
 
       "bind9"
-	ifvarclass => "bind9_config_repaired",
+	ifvarclass => "bind9_proc_missing|bind9_config_repaired",
 	service_policy => "restart";
 
   commands:
@@ -145,6 +150,10 @@ bundle agent bind
     verbose_mode|DEBUG|default:DEBUG::
       "$(this.bundle): Hello, this is an automatically loaded bundle";
       "$(this.bundle): prefix=''$(prefix)''";
+
+    ns01.verbose_mode|ns01.DEBUG|ns01.default:DEBUG::
+      "$(this.bundle): named är osynlig" ifvarclass => "bind9_proc_missing";
+      "$(this.bundle): named är igång"   unless => "bind9_proc_missing";
 }
 
 bundle edit_line named_conf
