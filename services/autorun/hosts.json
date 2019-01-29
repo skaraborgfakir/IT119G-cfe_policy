@@ -16,7 +16,7 @@
 	{ "key": "ns01",        "type": "A", "data": "192.168.2.22", "use_dhcp": "notany"},
 	{ "key": "cfengine",    "type": "A", "data": "192.168.2.24", "use_dhcp": "notany"},
 	{ "key": "vcs",         "type": "A", "data": "192.168.2.25", "use_dhcp": "notany"},
-	{ "key": "www",         "type": "C", "data": "webserver01", "use_dhcp": "notany"},
+	{ "key": "www",         "type": "CNAME", "data": "webserver01", "use_dhcp": "notany"},
     ],
     "dns_nameserver": [ "192.168.2.22" ],
 
