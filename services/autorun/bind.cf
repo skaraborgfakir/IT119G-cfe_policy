@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 14:29:25 nsa>
+# Time-stamp: <2019-01-29 14:31:40 nsa>
 #
 
 bundle agent bind
@@ -160,6 +160,7 @@ body process_select named_selector
 {
 	command => "named";
 	process_owner => {"bind"};
+	process_result => "process_owner.command";
 }
 
 bundle edit_line named_conf
