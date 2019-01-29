@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 15:35:02 nsa>
+# Time-stamp: <2019-01-29 15:38:37 nsa>
 #
 # garantera apache
 #
@@ -45,13 +45,10 @@ bundle edit_line html_test
 <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\">
   <!--
-    Modified from the Debian original for Ubuntu
-    Last updated: 2014-03-19
-    See: https://launchpad.net/bugs/1288690
   -->
   <head>
     <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />
-    <title>Apache2 Ubuntu Default Page: It works</title>
+    <title>Modifierad testfil för Apache2 från Ubuntu</title>
     <style type=\"text/css\" media=\"screen\">
   * {
     margin: 0px 0px 0px 0px;
@@ -241,26 +238,7 @@ bundle edit_line html_test
 	  Apache2 Ubuntu Default Page
 	</span>
       </div>
-<!--      <div class=\"table_of_contents floating_element\">
-	<div class=\"section_header section_header_grey\">
-	  TABLE OF CONTENTS
-	</div>
-	<div class=\"table_of_contents_item floating_element\">
-	  <a href=\"#about\">About</a>
-	</div>
-	<div class=\"table_of_contents_item floating_element\">
-	  <a href=\"#changes\">Changes</a>
-	</div>
-	<div class=\"table_of_contents_item floating_element\">
-	  <a href=\"#scope\">Scope</a>
-	</div>
-	<div class=\"table_of_contents_item floating_element\">
-	  <a href=\"#files\">Config files</a>
-	</div>
-      </div>
--->
       <div class=\"content_section floating_element\">
-
 
 	<div class=\"section_header section_header_red\">
 	  <div id=\"about\"></div>
@@ -268,6 +246,8 @@ bundle edit_line html_test
 	</div>
 	<div class=\"content_section_text\">
 	  <p>
+		MOdifieriad version av Ubuntu startsida för apache
+
 		This is the default welcome page used to test the correct
 		operation of the Apache2 server after installation on Ubuntu systems.
 		It is based on the equivalent page on Debian, from which the Ubuntu Apache
