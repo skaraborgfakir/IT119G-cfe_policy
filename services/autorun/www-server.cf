@@ -1,0 +1,25 @@
+# -*-cfengine-*-
+#
+# Time-stamp: <2019-01-29 15:18:20 nsa>
+#
+# garantera apache
+#
+
+bundle agent www_server
+{
+  meta:
+      "tags" slist => { "autorun" };
+
+  packages:
+    wwwserver01::
+      "apache2-bin"
+	policy => "present",
+	classes => results("apache_installation");
+
+  services:
+    !any.wwwserver01::
+      "isc-dhcp-server"
+	service_policy => "enable",
+	ifvarclass => "apache_installation_repaired";
+
+}

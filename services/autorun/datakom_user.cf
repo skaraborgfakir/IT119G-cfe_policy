@@ -1,6 +1,8 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 15:09:09 nsa>
+# Time-stamp: <2019-01-29 15:14:05 nsa>
+#
+# garantera datakom-användarens grupp och lösenord
 #
 
 bundle agent datakom_user
