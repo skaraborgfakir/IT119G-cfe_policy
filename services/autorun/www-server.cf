@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 15:33:51 nsa>
+# Time-stamp: <2019-01-29 15:35:02 nsa>
 #
 # garantera apache
 #
@@ -18,9 +18,9 @@ bundle agent www_server
   files:
     WWW_services::
       "/var/www/html/test.html"
-	edit_defaults => empty,
+	create => "true",
 	edit_line => html_test,
-	create => empty;
+	edit_defaults => empty;
 
       "/var/www/html/test.html"
 	perms => m("444");
