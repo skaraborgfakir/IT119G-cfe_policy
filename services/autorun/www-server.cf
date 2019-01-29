@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 15:23:33 nsa>
+# Time-stamp: <2019-01-29 15:25:37 nsa>
 #
 # garantera apache
 #
@@ -12,7 +12,7 @@ bundle agent www_server
 
   packages:
     WWW_services::
-      "apache2-bin"
+      "apache2"
 	policy => "present",
 	classes => results("bundle", "apache_installation");
 
