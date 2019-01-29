@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 14:26:17 nsa>
+# Time-stamp: <2019-01-29 14:29:25 nsa>
 #
 
 bundle agent bind
@@ -125,8 +125,8 @@ bundle agent bind
 	meta => { "bind" };
 
   processes:
-      "/usr/sbin/named"
-	process_owner => {"bind"},
+      ".*named"
+	process_select => named_selector,
 	restart_class => "bind9_proc_missing";
 
   services:
@@ -154,6 +154,12 @@ bundle agent bind
     ns01.verbose_mode|ns01.DEBUG|ns01.default:DEBUG::
       "$(this.bundle): named är osynlig" ifvarclass => "bind9_proc_missing";
       "$(this.bundle): named är igång"   unless => "bind9_proc_missing";
+}
+
+body process_select named_selector
+{
+	command => "named";
+	process_owner => {"bind"};
 }
 
 bundle edit_line named_conf
