@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 15:06:38 nsa>
+# Time-stamp: <2019-01-29 15:09:09 nsa>
 #
 
 bundle agent datakom_user
@@ -21,7 +21,7 @@ bundle agent datakom_user
       "datakom"
 	policy => "present",
 	group_primary => "datakom",
-	password =>
+	password =>  datakom_password,
 	description => "labanvändare/student",
 	ifvarclass => "datakom_group_exists";
 }
