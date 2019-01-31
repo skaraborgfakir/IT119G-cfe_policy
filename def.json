@@ -1,58 +1,52 @@
 {
-  "vars": {
-      "timestamp": "Time-stamp: <2019-01-31 16:33:59 nsa>",
-      "domain": "b18steni.it119g.nsa.his.se",
-      "dns_nameserver": [
-      "192.168.2.22",
-      "10.0.252.201"
-    ],
-    "control_server_allowusers_non_policy_server": [
-      "root",
-      "datakom"
-    ],
-    "control_server_allowusers_policy_server": [
-      "root",
-      "datakom"
-    ],
-    "acl": [
-      "127.0.0.1",
-      "192.168.1.0\/24",
-      "192.168.2.0\/24"
-    ]
-  },
-  "classes": {
-    "WWW_services": [
-      "webserver01"
-    ],
-    "enable_DHCP_server": [
-      "dhcp01"
-    ],
-    "disable_DHCP_server": [
-      "notdhcp01"
-    ],
-    "enable_DNS_server": [
-      "notns01"
-    ],
-    "disable_DNS_server": [
-      "ns01"
-    ],
-    "DHCP_server": [
-      "dhcp01"
-    ],
-    "DNS_server": [
-      "ns01"
-    ],
-    "run_test_version": [
-      "any"
-    ],
-    "apt_get_upgrade_disabled": [
-      "any"
-    ],
-    "cfengine_internal_masterfiles_update": [
-      "any"
-    ],
-    "services_autorun": [
-      "any"
-    ]
-  }
+    "vars": {
+	"timestamp": "Time-stamp: <2019-01-31 16:48:00 nsa>",
+	"domain": "b18steni.it119g.nsa.his.se",
+	"dns_nameserver": [
+	    "192.168.2.22",
+	    "10.0.252.201"
+	],
+	"control_server_allowusers_non_policy_server": [
+	    "root",
+	    "datakom"
+	],
+	"control_server_allowusers_policy_server": [
+	    "root",
+	    "datakom"
+	],
+	"acl": [
+	    "127.0.0.1",
+	    "192.168.1.0\/24",
+	    "192.168.2.0\/24"
+	]
+    },
+    "classes": {
+	"cfengine_internal_masterfiles_update": [ "any" ],
+	"services_autorun": [ "any" ],
+
+	"apt_get_upgrade_disabled": [ "any" ]
+	
+	"WWW_services": [ "webserver01" ],
+
+	"DHCP_server": [ "dhcp01" ],
+	"enable_DHCP_server": [ "dhcp01"
+			      ],
+	"disable_DHCP_server": [ "notdhcp01"
+			       ],
+
+	"DNS_server":  [ "ns01" ],
+
+	"enable_DNS_server": [ "notns01" ],
+	"disable_DNS_server": [ "ns01" ],
+
+	"run_open_vm_tools": [ "cfengine",
+			       "dhcp01",
+			       "ns01",
+			       "pc01",
+			       "pc02",
+			       "vcs",
+			       "VMRouter",
+			       "webserver01" ],
+	"run_test_version": [ "any" ]
+    }
 }
