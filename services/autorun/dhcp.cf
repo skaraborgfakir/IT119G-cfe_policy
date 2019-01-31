@@ -74,7 +74,7 @@ bundle agent dhcp
 
       "isc-dhcp-server"
        service_policy => "restart",
-	   ifvarclass => "dhcpd_conf_changed_repaired"
+	   ifvarclass => "dhcpd_conf_changed_repaired";
 
   reports:
     verbose_mode|DEBUG|DEBUG_b18steni::
