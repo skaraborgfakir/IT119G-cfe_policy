@@ -101,6 +101,9 @@ bundle edit_line dhcpd_conf
 ddns-update-style none;
 
 option domain-name \"{{vars.def.domain}}\";
+{{#vars.dhcp.template_data.dns_nameserver}}
+option domain-name-servers {{.}};
+{{/vars.dhcp.template_data.dns_nameserver}}
 
 default-lease-time 600;
 max-lease-time 7200;
@@ -112,10 +115,6 @@ authoritative;
 # Use this to send dhcp log messages to a different log file (you also
 # have to hack syslog.conf to complete the redirection).
 log-facility local7;
-
-{{#vars.dhcp.template_data.dns_nameserver}}
-option domain-name-servers {{.}};
-{{/vars.dhcp.template_data.dns_nameserver}}
 
 subnet 192.168.1.0 netmask 255.255.255.0 {
   range 192.168.1.65 192.168.1.126;
