@@ -91,10 +91,11 @@ bundle edit_line dhcpd_conf
       "#
 # avsedd för {{vars.sys.fqhost}}
 #
-# cfe-regler från {{vars.sys.policy_hub}}
+# def.json tidsstämpel: {{{vars.def.timestamp}}}
+# host.json tidsstämpel: {{{vars.dhcp.template_data.timestamp}}}
 # senast uppdatering av policy: {{sys.last_policy_update}}
 #
-# def.json tidsstämpel: {{{vars.def.timestamp}}}
+# cfe-regler från {{vars.sys.policy_hub}}
 #
 
 ddns-update-style none;
@@ -119,15 +120,13 @@ option domain-name-servers {{.}};
 subnet 192.168.1.0 netmask 255.255.255.0 {
   range 192.168.1.65 192.168.1.126;
   option routers 192.168.1.1;
+  option domain-name \"{{vars.def.domain}}\";
 }
 
 {{#vars.dhcp.template_data.mac_mappings}}
 host {{name}} {
    hardware ethernet {{mac_addr}};
    fixed-address {{ip_addr}};
-{{#vars.dhcp.template_data.dns_nameserver}}
-   option domain-name-servers {{.}};
-{{/vars.dhcp.template_data.dns_nameserver}}
 }
 {{/vars.dhcp.template_data.mac_mappings}}
 ";
@@ -140,6 +139,8 @@ bundle edit_line default_isc_dhcp_server
 # avsedd för {{vars.sys.fqhost}}
 #
 # def.json tidsstämpel: {{{vars.def.timestamp}}}
+# host.json tidsstämpel: {{{vars.dhcp.template_data.timestamp}}}
+# senast uppdatering av policy: {{sys.last_policy_update}}
 #
 # cfe-regler från {{vars.sys.policy_hub}}
 #
@@ -147,26 +148,10 @@ bundle edit_line default_isc_dhcp_server
 # sourced by /etc/init.d/isc-dhcp-server
 # installed at /etc/default/isc-dhcp-server by the maintainer scripts
 
-#
-# This is a POSIX shell fragment
-#
-
-#DHCPD_CONF={{vars.dhcp.template_data.dhcpd_conf_file}}
-#DHCPD_PID={{vars.dhcp.template_data.dhcpd_pid_file}}
-
-# Path to dhcpd's config file (default: /etc/dhcp/dhcpd.conf).
-#DHCPD_CONF=/etc/dhcp/dhcpd.conf
-
-# Path to dhcpd's PID file (default: /var/run/dhcpd.pid).
-#DHCPD_PID=/var/run/dhcpd.pid
-
-# Additional options to start dhcpd with.
-#	Don't use options -cf or -pf here; use DHCPD_CONF/ DHCPD_PID instead
-#OPTIONS=\"\"
-OPTIONS={{vars.dhcp.template_data.dhcp_options}}
-
-# On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
-#	Separate multiple interfaces with spaces, e.g. \"eth0 eth1\".
-INTERFACES={{vars.dhcp.template_data.dhcp_listen_iface}}
+# DHCPD_CONF={{vars.dhcp.template_data.dhcpd_conf_file}}
+# DHCPD_PID={{vars.dhcp.template_data.dhcpd_pid_file}}
+# DHCPD_LEASE_FILE={{vars.dhcp.template_data.dhcpd_lease_file}}
+OPTIONS={{vars.dhcp.template_data.dhcpd_options}}
+INTERFACES={{vars.dhcp.template_data.dhcpd_listen_iface}}
 ";
 }

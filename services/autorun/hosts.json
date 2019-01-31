@@ -1,4 +1,6 @@
 {
+    "timestamp": "Time-stamp: <2019-01-31 18:58:06 nsa>",
+    "dns_nameserver": [ "192.168.2.22" ],
     "hosts":
     [
 	{ "name": "pc01",        "ip_addr": "192.168.1.11", "use_dhcp": "any",    "dns_resolvable": "false"},
@@ -18,15 +20,13 @@
 	{ "key": "vcs",         "type": "A", "data": "192.168.2.25", "use_dhcp": "notany"},
 	{ "key": "www",         "type": "CNAME", "data": "webserver01", "use_dhcp": "notany"},
     ],
-    "dns_nameserver": [ "192.168.2.22" ],
-
     "mac_mappings": [
 	{ "name": "pc01", "ip_addr": "192.168.1.11", "mac_addr": "00:50:56:36:16:67"},
 	{ "name": "pc02", "ip_addr": "192.168.1.12", "mac_addr": "00:50:56:28:81:a4"}
     ],
-    "dhcpd_conf_file": "/etc/dhcp/dhcpd.conf",
-    "dhcpd_pid_file":  "/run/dhcp-server/dhcpd.pid",
-
-    "dhcp_options": "",
-    "dhcp_listen_iface": "ens160"
+    "dhcpd_conf_file":   "/etc/dhcp/dhcpd.conf",
+    "dhcpd_pid_file":    "/run/dhcp-server/dhcpd.pid",
+    "dhcpd_lease_file":  "/var/lib/dhcp/dhcpd.leases",
+    "dhcpd_options":      "",
+    "dhcpd_listen_iface": "ens160"
 }
