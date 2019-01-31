@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-31 17:07:21 nsa>
+# Time-stamp: <2019-01-31 17:20:33 nsa>
 #
 
 bundle agent open_vm_tools
@@ -18,10 +18,20 @@ bundle agent open_vm_tools
   classes:
     centos::
       "vmtoolsd_service_enabled"
-	expression => "any";
+	scope => "namespace",
+	expression => "any",
+	meta => { "inventory", "attribute_name=vmtoolsd status"};
 
       "vmtoolsd_daemon_installed"
-	expression => fileexists("/usr/bin/vmtoolsd");
+	scope => "namespace",
+	expression => fileexists("/usr/bin/vmtoolsd"),
+	meta => { "inventory", "attribute_name=vmtoolsd status"};
+
+  processes:
+      "vmtoolsd"
+	process_select => vmtoolsd_selector,
+	restart_class => "vmtoolsd_should_restart",
+	process_count => vmtoolsd_count;
 
   services:
     run_open_vm_tools.ubuntu::
@@ -42,4 +52,18 @@ bundle agent open_vm_tools
       "open-vm-tools"
 	policy => "present",
 	package_module => yum;
+}
+
+
+body process_count vmtoolsd_count
+{
+	match_range => "1,1";
+	in_range_define => { "vmtoolsd_is_ok"  };
+	out_of_range_define => { "vmtoolsd_is_dead" };
+}
+
+body process_select vmtoolsd_selector
+{
+	command  => "vmtoolsd";
+	process_result => "command";
 }
