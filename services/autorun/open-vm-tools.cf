@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 13:26:23 nsa>
+# Time-stamp: <2019-01-31 16:53:33 nsa>
 #
 
 bundle agent open_vm_tools
@@ -8,24 +8,23 @@ bundle agent open_vm_tools
   meta:
       "tags" slist => { "autorun" };
 
-  classes:
-      "open_vm_tools_enabled"
-	expression => or("ns01",
-			 "dhcp01");
-
   services:
-    ubuntu::
+    run_open_vm_tools.ubuntu::
       "open-vm-tools"
-	service_policy => "start",
-	unless => "open_vm_tools_enabled";
+	service_policy => "start";
 
-      "open-vm-tools"
-	service_policy => "enable",
-	unless => "open_vm_tools_enabled";
+    run_open_vm_tools.centos::
+      "vmtoolsd"
+	service_policy => "enable";
 
   packages:
-    ubuntu::
+    run_open_vm_tools.ubuntu::
       "open-vm-tools"
 	policy => "present",
 	package_module => apt_get;
+
+    run_open_vm_tools.centos::
+      "open-vm-tools"
+	policy => "present",
+	package_module => yum;
 }
