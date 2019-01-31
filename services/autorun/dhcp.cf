@@ -151,6 +151,9 @@ bundle edit_line default_isc_dhcp_server
 # This is a POSIX shell fragment
 #
 
+#DHCPD_CONF={{vars.dhcp.template_data.dhcpd_conf_file}}
+#DHCPD_PID={{vars.dhcp.template_data.dhcpd_pid_file}}
+
 # Path to dhcpd's config file (default: /etc/dhcp/dhcpd.conf).
 #DHCPD_CONF=/etc/dhcp/dhcpd.conf
 
@@ -164,7 +167,6 @@ OPTIONS={{vars.dhcp.template_data.dhcp_options}}
 
 # On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
 #	Separate multiple interfaces with spaces, e.g. \"eth0 eth1\".
-#INTERFACES=\"\"
 INTERFACES={{vars.dhcp.template_data.dhcp_listen_iface}}
 ";
 }
