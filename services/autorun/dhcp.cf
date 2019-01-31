@@ -64,12 +64,14 @@ bundle agent dhcp
     DHCP_server::
       "isc-dhcp-server"
 	       policy => "present",
+	      classes => results("namespace", "isc_dhcp_server_installed"),
        package_module => apt_get,
 		 meta => { "dhcp" };
 
   services:
     DHCP_server::
       "isc-dhcp-server"
+	   ifvarclass => "isc_dhcp_server_installed_repaired",
        service_policy => "enable";
 
       "isc-dhcp-server"
@@ -123,6 +125,9 @@ subnet 192.168.1.0 netmask 255.255.255.0 {
 host {{name}} {
    hardware ethernet {{mac_addr}};
    fixed-address {{ip_addr}};
+{{#vars.dhcp.template_data.dns_nameserver}}
+   option domain-name-servers {{.}};
+{{/vars.dhcp.template_data.dns_nameserver}}
 }
 {{/vars.dhcp.template_data.mac_mappings}}
 ";
