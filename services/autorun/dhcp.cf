@@ -45,20 +45,20 @@ bundle agent dhcp
       #
       # etcd/dhcp/dhcpd.conf
       #
-      "/etc/dhcp/dhcpd.conf.tmpl.mustache"
+      "$(template_data[dhcpd_conf_file]).tmpl.mustache"
 	       create => "true",
 	edit_defaults => empty,
 	    edit_line => dhcpd_conf;
 
-      "/etc/dhcp/dhcpd.conf"
+      "$(template_data[dhcpd_conf_file])"
 	       create => "true",
 	edit_defaults => empty,
       template_method => "mustache",
-	edit_template => "/etc/dhcp/dhcpd.conf.tmpl.mustache",
+	edit_template => "$(template_data[dhcpd_conf_file]).tmpl.mustache",
 	      classes => results("bundle", "dhcpd_conf_changed");
 
-      "/etc/dhcp/dhcpd.conf.tmpl.mustache" perms => m("444");
-      "/etc/dhcp/dhcpd.conf"               perms => m("444");
+      "$(template_data[dhcpd_conf_file]).tmpl.mustache" perms => m("444");
+      "$(template_data[dhcpd_conf_file])"               perms => m("444");
 
   packages:
     DHCP_server::
