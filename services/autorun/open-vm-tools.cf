@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-31 17:46:36 nsa>
+# Time-stamp: <2019-01-31 18:11:40 nsa>
 #
 
 bundle agent open_vm_tools
@@ -91,6 +91,6 @@ body process_count vmtoolsd_count
 
 body process_select vmtoolsd_selector
 {
-	     command  => "vmtoolsd";
+	     command  => ".*vmtoolsd";
        process_result => "command";
 }
