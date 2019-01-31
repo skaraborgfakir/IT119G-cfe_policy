@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-31 17:20:33 nsa>
+# Time-stamp: <2019-01-31 17:22:26 nsa>
 #
 
 bundle agent open_vm_tools
@@ -13,6 +13,11 @@ bundle agent open_vm_tools
       "vmtoolsd_status"
 	string => "vmtoolsd installed",
 	ifvarclass => "vmtoolsd_daemon_installed",
+	meta => { "inventory", "attribute_name=vmtoolsd status"};
+
+      "vmtoolsd_status"
+	string => "vmtoolsd_is_dead" ,
+	ifvarclass => "vmtoolsd_is_dead" ,
 	meta => { "inventory", "attribute_name=vmtoolsd status"};
 
   classes:
@@ -30,7 +35,6 @@ bundle agent open_vm_tools
   processes:
       "vmtoolsd"
 	process_select => vmtoolsd_selector,
-	restart_class => "vmtoolsd_should_restart",
 	process_count => vmtoolsd_count;
 
   services:
