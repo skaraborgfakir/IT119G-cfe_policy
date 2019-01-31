@@ -6,95 +6,81 @@ bundle agent dhcp
       "tags" slist => { "autorun" };
 
   vars:
-    disable_DHCP_server::
-      "prefix"
-	string => "/var/cfengine/testings";
-
-    enable_DHCP_server::
-      "prefix"
-	string => "";
-
     any::
       "template_data"
-	data => readjson("$(this.promise_dirname)/hosts.json");
+		 data => readjson("$(this.promise_dirname)/hosts.json");
 
   files:
     DHCP_server::
-      "$(prefix)/."
-	create => "true";
-
       #
       # spara undan dist-versionen av filerna
       #
-      "/etc/dhcp/dhcpd.conf.saved_dist_version"
-	unless => fileexists("/etc/dhcp/dhcpd.conf.saved_dist_version"),
-	copy_from => local_dcp("/etc/dhcp/dhcpd.conf"),
-	comment => "save dist versionen";
-
       "/etc/default/isc-dhcp-server.saved_dist_version"
-	unless => fileexists("/etc/default/isc-dhcp-server.saved_dist_version"),
-	copy_from => local_dcp("/etc/default/isc-dhcp-server"),
-	comment => "save dist versionen";
+	       unless => fileexists("/etc/default/isc-dhcp-server.saved_dist_version"),
+	    copy_from => local_dcp("/etc/default/isc-dhcp-server"),
+	      comment => "save dist versionen";
+
+      "/etc/dhcp/dhcpd.conf.saved_dist_version"
+	       unless => fileexists("/etc/dhcp/dhcpd.conf.saved_dist_version"),
+	    copy_from => local_dcp("/etc/dhcp/dhcpd.conf"),
+	      comment => "save dist versionen";
 
       #
       # etc/default/isc-dhcp-server
       #
-      "$(prefix)/etc/default/isc-dhcp-server.tmpl.mustache"
-	create => "true",
+      "/etc/default/isc-dhcp-server.tmpl.mustache"
+	       create => "true",
 	edit_defaults => empty,
-	edit_line => default_isc_dhcp_server;
+	    edit_line => default_isc_dhcp_server;
 
-      "$(prefix)/etc/default/isc-dhcp-server"
-	create => "true",
+      "/etc/default/isc-dhcp-server"
+	       create => "true",
 	edit_defaults => empty,
-	template_method => "mustache",
-	edit_template => "$(prefix)/etc/default/isc-dhcp-server.tmpl.mustache";
+      template_method => "mustache",
+	edit_template => "/etc/default/isc-dhcp-server.tmpl.mustache";
 
-      "$(prefix)/etc/default/isc-dhcp-server.tmpl.mustache" perms => m("444");
-      "$(prefix)/etc/default/isc-dhcp-server"               perms => m("444");
+      "/etc/default/isc-dhcp-server.tmpl.mustache" perms => m("444");
+      "/etc/default/isc-dhcp-server"               perms => m("444");
 
       #
       # etcd/dhcp/dhcpd.conf
       #
-      "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache"
-	create => "true",
+      "/etc/dhcp/dhcpd.conf.tmpl.mustache"
+	       create => "true",
 	edit_defaults => empty,
-	edit_line => dhcpd_conf;
+	    edit_line => dhcpd_conf;
 
-      "$(prefix)/etc/dhcp/dhcpd.conf"
-	create => "true",
+      "/etc/dhcp/dhcpd.conf"
+	       create => "true",
 	edit_defaults => empty,
-	template_method => "mustache",
-	edit_template => "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache",
-	classes => results("bundle", "dhcpd_conf_changed");
+      template_method => "mustache",
+	edit_template => "/etc/dhcp/dhcpd.conf.tmpl.mustache",
+	      classes => results("bundle", "dhcpd_conf_changed");
 
-      "$(prefix)/etc/dhcp/dhcpd.conf.tmpl.mustache" perms => m("444");
-      "$(prefix)/etc/dhcp/dhcpd.conf"               perms => m("444");
+      "/etc/dhcp/dhcpd.conf.tmpl.mustache" perms => m("444");
+      "/etc/dhcp/dhcpd.conf"               perms => m("444");
 
   packages:
     DHCP_server::
       "isc-dhcp-server"
-	policy => "present",
-	package_module => apt_get,
-	meta => { "dhcp" };
+	       policy => "present",
+       package_module => apt_get,
+		 meta => { "dhcp" };
 
   services:
-    enable_DHCP_server.DHCP_server::
+    DHCP_server::
       "isc-dhcp-server"
-	service_policy => "enable";
+       service_policy => "enable";
 
-    enable_DHCP_server.DHCP_server.dhcpd_conf_changed_repaired::
       "isc-dhcp-server"
-	service_policy => "restart";
-
-    disable_DHCP_server.DHCP_server::
-      "isc-dhcp-server"
-	service_policy => "disable";
+       service_policy => "restart",
+	   ifvarclass => "dhcpd_conf_changed_repaired"
 
   reports:
-    verbose_mode|DEBUG|default:DEBUG::
+    verbose_mode|DEBUG|DEBUG_b18steni::
       "$(this.bundle): Hello, this is an automatically loaded bundle";
-      "$(this.bundle): prefix=''$(prefix)''";
+      "$(this.bundle): isc-dhcpd:s configuration ändrades"
+	   ifvarclass => "dhcpd_conf_changed_repaired";
 }
 
 bundle edit_line dhcpd_conf
@@ -105,6 +91,8 @@ bundle edit_line dhcpd_conf
 #
 # cfe-regler från {{vars.sys.policy_hub}}
 # senast uppdatering av policy: {{sys.last_policy_update}}
+#
+# def.json tidsstämpel: {{{vars.def.timestamp}}}
 #
 
 ddns-update-style none;
@@ -151,6 +139,8 @@ bundle edit_line default_isc_dhcp_server
   insert_lines:
       "#
 # avsedd för {{vars.sys.fqhost}}
+#
+# def.json tidsstämpel: {{{vars.def.timestamp}}}
 #
 # cfe-regler från {{vars.sys.policy_hub}}
 #
