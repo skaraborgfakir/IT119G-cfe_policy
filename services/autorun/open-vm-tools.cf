@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-31 18:11:40 nsa>
+# Time-stamp: <2019-01-31 18:14:05 nsa>
 #
 
 bundle agent open_vm_tools
@@ -80,6 +80,11 @@ bundle agent open_vm_tools
       "open-vm-tools"
 	       policy => "present",
        package_module => yum;
+
+  reports:
+    DEBUG_b18steni::
+      "$(this.bundle) vmtools is dead"
+	   ifvarclass => "vmtoolsd_is_dead";
 }
 
 body process_count vmtoolsd_count
