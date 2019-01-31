@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-31 17:34:11 nsa>
+# Time-stamp: <2019-01-31 17:46:36 nsa>
 #
 
 bundle agent open_vm_tools
@@ -13,19 +13,25 @@ bundle agent open_vm_tools
       "vmtoolsd_vmhgfs_is_installed"
 	       string => "vmhgfs binary is installed",
 	   ifvarclass => fileexists("/sbin/mount.vmhgfs"),
+		 meta => { "inventory", "attribute_name=vmtools hgfs status"};
+
+      "vmtoolsd_status"
+	       string => "vmtoolsd is dead (process selector)" ,
+	   ifvarclass => "vmtoolsd_is_dead" ,
 		 meta => { "inventory", "attribute_name=vmtoolsd status"};
 
     centos::
       "vmtoolsd_vmhgfs_is_installed"
 	       string => "vmhgfs binary is installed",
 	   ifvarclass => fileexists("/sbin/mount.vmhgfs"),
-		 meta => { "inventory", "attribute_name=vmtoolsd status"};
+		 meta => { "inventory", "attribute_name=vmtools hgfs status"};
 
       "vmtoolsd_status"
-	       string => "vmtoolsd_is_dead" ,
+	       string => "vmtoolsd is dead (process selector)" ,
 	   ifvarclass => "vmtoolsd_is_dead" ,
 		 meta => { "inventory", "attribute_name=vmtoolsd status"};
 
+    !any::
       "vmtoolsd_status"
 	       string => "vmtoolsd installed",
 	   ifvarclass => "vmtoolsd_daemon_installed",
@@ -51,15 +57,20 @@ bundle agent open_vm_tools
 	process_count => vmtoolsd_count;
 
   services:
-    run_open_vm_tools.ubuntu::
+    !any.run_open_vm_tools.ubuntu::
       "open-vm-tools"
        service_policy => "start";
 
-    run_open_vm_tools.centos::
+    !any.run_open_vm_tools.centos::
       "vmtoolsd"
        service_policy => "enable";
 
   packages:
+    run_open_vm_tools_desktop.ubuntu::
+      "open-vm-tools-desktop"
+	       policy => "present",
+       package_module => apt_get;
+
     run_open_vm_tools.ubuntu::
       "open-vm-tools"
 	       policy => "present",
