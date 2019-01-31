@@ -100,6 +100,7 @@ bundle edit_line dhcpd_conf
 
 ddns-update-style none;
 
+option routers 192.168.1.1;
 option domain-name \"{{vars.def.domain}}\";
 option domain-name-servers {{vars.dhcp.template_data.dns_nameserver}};
 option ntp-servers 194.58.203.20;
@@ -117,7 +118,6 @@ log-facility local7;
 
 subnet 192.168.1.0 netmask 255.255.255.0 {
   range 192.168.1.65 192.168.1.126;
-  option routers 192.168.1.1;
 }
 
 {{#vars.dhcp.template_data.mac_mappings}}
