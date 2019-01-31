@@ -126,7 +126,7 @@ subnet 192.168.1.0 netmask 255.255.255.0 {
      fixed-address {{ip_addr}};
   }
 {{/vars.dhcp.template_data.mac_mappings}}
-};
+}
 ";
 }
 
