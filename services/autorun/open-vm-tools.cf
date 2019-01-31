@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-31 17:22:26 nsa>
+# Time-stamp: <2019-01-31 17:34:11 nsa>
 #
 
 bundle agent open_vm_tools
@@ -9,65 +9,77 @@ bundle agent open_vm_tools
       "tags" slist => { "autorun" };
 
   vars:
+    ubuntu::
+      "vmtoolsd_vmhgfs_is_installed"
+	       string => "vmhgfs binary is installed",
+	   ifvarclass => fileexists("/sbin/mount.vmhgfs"),
+		 meta => { "inventory", "attribute_name=vmtoolsd status"};
+
     centos::
-      "vmtoolsd_status"
-	string => "vmtoolsd installed",
-	ifvarclass => "vmtoolsd_daemon_installed",
-	meta => { "inventory", "attribute_name=vmtoolsd status"};
+      "vmtoolsd_vmhgfs_is_installed"
+	       string => "vmhgfs binary is installed",
+	   ifvarclass => fileexists("/sbin/mount.vmhgfs"),
+		 meta => { "inventory", "attribute_name=vmtoolsd status"};
 
       "vmtoolsd_status"
-	string => "vmtoolsd_is_dead" ,
-	ifvarclass => "vmtoolsd_is_dead" ,
-	meta => { "inventory", "attribute_name=vmtoolsd status"};
+	       string => "vmtoolsd_is_dead" ,
+	   ifvarclass => "vmtoolsd_is_dead" ,
+		 meta => { "inventory", "attribute_name=vmtoolsd status"};
+
+      "vmtoolsd_status"
+	       string => "vmtoolsd installed",
+	   ifvarclass => "vmtoolsd_daemon_installed",
+		 meta => { "inventory", "attribute_name=vmtoolsd status"};
 
   classes:
-    centos::
-      "vmtoolsd_service_enabled"
-	scope => "namespace",
-	expression => "any",
-	meta => { "inventory", "attribute_name=vmtoolsd status"};
+    ubuntu::
 
+    centos::
       "vmtoolsd_daemon_installed"
-	scope => "namespace",
-	expression => fileexists("/usr/bin/vmtoolsd"),
-	meta => { "inventory", "attribute_name=vmtoolsd status"};
+		scope => "namespace",
+	   expression => fileexists("/usr/bin/vmtoolsd"),
+		 meta => { "inventory", "attribute_name=vmtoolsd status"};
+
+      # "vmtoolsd_service_enabled"
+      #		      scope => "namespace",
+      #		 expression => "any",
+      #		       meta => { "inventory", "attribute_name=vmtoolsd status"};
 
   processes:
       "vmtoolsd"
-	process_select => vmtoolsd_selector,
+       process_select => vmtoolsd_selector,
 	process_count => vmtoolsd_count;
 
   services:
     run_open_vm_tools.ubuntu::
       "open-vm-tools"
-	service_policy => "start";
+       service_policy => "start";
 
     run_open_vm_tools.centos::
       "vmtoolsd"
-	service_policy => "enable";
+       service_policy => "enable";
 
   packages:
     run_open_vm_tools.ubuntu::
       "open-vm-tools"
-	policy => "present",
-	package_module => apt_get;
+	       policy => "present",
+       package_module => apt_get;
 
     run_open_vm_tools.centos::
       "open-vm-tools"
-	policy => "present",
-	package_module => yum;
+	       policy => "present",
+       package_module => yum;
 }
-
 
 body process_count vmtoolsd_count
 {
-	match_range => "1,1";
-	in_range_define => { "vmtoolsd_is_ok"  };
-	out_of_range_define => { "vmtoolsd_is_dead" };
+	  match_range => "1,1";
+      in_range_define => { "vmtoolsd_is_ok"  };
+  out_of_range_define => { "vmtoolsd_is_dead" };
 }
 
 body process_select vmtoolsd_selector
 {
-	command  => "vmtoolsd";
-	process_result => "command";
+	     command  => "vmtoolsd";
+       process_result => "command";
 }
