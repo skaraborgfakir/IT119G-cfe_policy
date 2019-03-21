@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-21 15:24:48 nsa>
+# Time-stamp: <2019-03-21 15:27:04 nsa>
 #
 # garantera apache
 #
@@ -56,7 +56,12 @@ bundle agent www_server
 	ifvarclass => "apache_installation_repaired";
 
   reports:
-    "DEBUG"::
+    verbose_mode|DEBUG|default:DEBUG::
+          "$(this.bundle): Hello, this is an automatically loaded bundle";
+
+    webserver01.verbose_mode|webserver01.DEBUG|webserver01.default:DEBUG::
+      "$(this.bundle): named är osynlig" ifvarclass => "bind9_proc_missing";
+      "$(this.bundle): named är igång"   unless => "bind9_proc_missing";
 }
 
 body environment_interface wwwserver01_interface
