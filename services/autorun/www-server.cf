@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-21 16:59:25 nsa>
+# Time-stamp: <2019-03-21 17:41:34 nsa>
 #
 # garantera apache
 #
@@ -8,7 +8,7 @@
 bundle agent www_server
 {
   meta:
-      # "tags" slist => { "autorun" };
+      "tags" slist => { "autorun" };
 
   classes:
     WWW_services::
@@ -50,7 +50,7 @@ bundle agent www_server
 
   reports:
     verbose_mode|DEBUG|default:DEBUG::
-          "$(this.bundle): Hello, this is an automatically loaded bundle";
+      "$(this.bundle): Hello, this is an automatically loaded bundle";
 
     webserver01.verbose_mode|webserver01.DEBUG|webserver01.default:DEBUG::
 }

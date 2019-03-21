@@ -10,8 +10,6 @@ bundle agent main
 {
   methods:
     # Activate your custom policies here
-    "www_server"
-        usebundle => "www_server";
 }
 
 # Local Variables:
