@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-21 17:48:15 nsa>
+# Time-stamp: <2019-03-21 17:57:37 nsa>
 #
 
 bundle agent system_upgrade
@@ -24,7 +24,7 @@ bundle agent system_upgrade
 	unless => "yum_check_update_disabled";
 
       "/usr/bin/yum"
-	args =>"upgrade",
+	args =>"--assumeyes --quiet upgrade",
 	unless => "yum_upgrade_disabled";
 }
 
