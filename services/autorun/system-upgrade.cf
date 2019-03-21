@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-21 16:19:04 nsa>
+# Time-stamp: <2019-03-21 17:48:15 nsa>
 #
 
 bundle agent system_upgrade
@@ -17,6 +17,15 @@ bundle agent system_upgrade
       "/usr/bin/apt-get"
 	args =>"upgrade",
 	unless => "apt_get_upgrade_disabled";
+
+    redhat::
+      "/usr/bin/yum"
+	args =>"check-update",
+	unless => "yum_check_update_disabled";
+
+      "/usr/bin/yum"
+	args =>"upgrade",
+	unless => "yum_upgrade_disabled";
 }
 
 # Local Variables:
