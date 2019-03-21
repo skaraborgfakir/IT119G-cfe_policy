@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-21 16:45:37 nsa>
+# Time-stamp: <2019-03-21 16:59:25 nsa>
 #
 # garantera apache
 #
@@ -42,13 +42,6 @@ bundle agent www_server
 	policy => "present",
 	classes => results("bundle", "apache_installation");
 
-  guest_environments:
-      "webserver01"
-	environment_state => "running",
-	environment_interface => wwwserver01_interface,
-	environment_state => "running",
-	meta => { "http-server" };
-      
   services:
     WWW_services::
       "apache2"
@@ -60,13 +53,6 @@ bundle agent www_server
           "$(this.bundle): Hello, this is an automatically loaded bundle";
 
     webserver01.verbose_mode|webserver01.DEBUG|webserver01.default:DEBUG::
-}
-
-body environment_interface wwwserver01_interface
-{
-	env_name => "wwwserver01";
-	env_addresses => {"192.168.2.21"};
-	env_network => "Server network";
 }
 
 bundle edit_line html_mytextfile_test
