@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-21 15:23:13 nsa>
+# Time-stamp: <2019-03-21 15:24:48 nsa>
 #
 # garantera apache
 #
@@ -54,6 +54,9 @@ bundle agent www_server
       "apache2"
 	service_policy => "enable",
 	ifvarclass => "apache_installation_repaired";
+
+  reports:
+    "DEBUG"::
 }
 
 body environment_interface wwwserver01_interface
