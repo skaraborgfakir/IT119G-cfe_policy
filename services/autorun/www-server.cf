@@ -42,11 +42,26 @@ bundle agent www_server
 	policy => "present",
 	classes => results("bundle", "apache_installation");
 
+  guest_environments:
+      "webserver01"
+	environment_type => "esx",
+	environment_state => "running",
+	environment_interface => wwwserver01_interface,
+	environment_state => "running",
+	meta => { "http-server" };
+      
   services:
     WWW_services::
       "apache2"
 	service_policy => "enable",
 	ifvarclass => "apache_installation_repaired";
+}
+
+body environment_interface wwwserver01_interface
+{
+	env_name => "wwwserver01";
+	env_addresses => {"192.168.2.21"};
+	env_network => "Server network";
 }
 
 bundle edit_line html_mytextfile_test
