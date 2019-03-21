@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 13:30:03 nsa>
+# Time-stamp: <2019-03-21 16:19:04 nsa>
 #
 
 bundle agent system_upgrade
@@ -18,3 +18,7 @@ bundle agent system_upgrade
 	args =>"upgrade",
 	unless => "apt_get_upgrade_disabled";
 }
+
+# Local Variables:
+# mode:cfengine
+# End:

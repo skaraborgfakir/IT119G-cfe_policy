@@ -10,5 +10,11 @@ bundle agent main
 {
   methods:
     # Activate your custom policies here
-
+    "www_server"
+        usebundle => "www_server";
+	use
 }
+
+# Local Variables:
+# mode:cfengine
+# End:

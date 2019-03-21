@@ -153,3 +153,7 @@ OPTIONS={{vars.dhcp.template_data.dhcpd_options}}
 INTERFACES={{vars.dhcp.template_data.dhcpd_listen_iface}}
 ";
 }
+
+# Local Variables:
+# mode:cfengine
+# End:

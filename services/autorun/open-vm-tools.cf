@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-01-31 18:16:20 nsa>
+# Time-stamp: <2019-03-21 16:19:36 nsa>
 #
 
 bundle agent open_vm_tools
@@ -79,3 +79,7 @@ body process_select vmtoolsd_selector
 	     command  => ".*vmtoolsd";
        process_result => "command";
 }
+
+# Local Variables:
+# mode:cfengine
+# End:

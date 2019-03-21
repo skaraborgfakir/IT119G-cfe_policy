@@ -1,6 +1,5 @@
-# -*-cfengine-*-
 #
-# Time-stamp: <2019-01-29 16:37:33 nsa>
+# Time-stamp: <2019-03-21 16:19:05 nsa>
 #
 
 bundle agent bind
@@ -289,3 +288,7 @@ $TTL 10
 
 ";
 }
+
+# Local Variables:
+# mode:cfengine
+# End:
