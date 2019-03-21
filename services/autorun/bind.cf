@@ -1,5 +1,5 @@
 #
-# Time-stamp: <2019-03-21 18:19:09 nsa>
+# Time-stamp: <2019-03-21 18:19:48 nsa>
 #
 
 bundle agent bind
@@ -258,7 +258,7 @@ $TTL 10
 	IN NS ns01
 
 {{#vars.bind.template_data.dns_resolvable_hosts}}
-{{key}}	IN	{{type}}	{{data}}
+{{key}}  IN  {{type}}  {{data}}
 {{/vars.bind.template_data.dns_resolvable_hosts}}
 ";
 }
