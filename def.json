@@ -1,6 +1,6 @@
 {
     "vars": {
-	"timestamp": "Time-stamp: <2019-03-29 10:19:32 nsa>",
+	"timestamp": "Time-stamp: <2019-03-29 10:23:44 nsa>",
 	"domain": "b18steni.it119g.nsa.his.se",
 	"dns_nameserver": [
 	    "192.168.2.22",
@@ -32,8 +32,9 @@
 
 	"WWW_services": [ "webserver01" ],
 
-	"DHCP_server":        [ "dhcp01" ],
-	"enable_DHCP_server": [ "dhcp01" ],
+	"DHCP_server":         [ "dhcp01" ],
+	"enable_DHCP_server":  [ "dhcp01" ],
+	"static_dhcp_mapping": [ "notnow" ],
 
 	"DNS_server":         [ "ns01" ],
 	"enable_DNS_server":  [ "notns01" ],
