@@ -1,7 +1,7 @@
 #
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-29 10:25:48 nsa>
+# Time-stamp: <2019-03-29 10:30:03 nsa>
 #
 
 bundle agent dhcp
@@ -120,18 +120,15 @@ authoritative;
 # have to hack syslog.conf to complete the redirection).
 log-facility local7;
 
+
+{{#classes.static_dhcp_mapping}}
+#
+# med static_dhcp_mapping
+#
 subnet 192.168.1.0 netmask 255.255.255.0 {
   range 192.168.1.65 192.168.1.126;
   option routers 192.168.1.1;
 }
-
-{{#classes.static_dhcp_mapping}}
-# med static_dhcp_mapping
-{{/classes.static_dhcp_mapping}}
-
-{{^classes.static_dhcp_mapping}}
-# utan static_dhcp_mapping
-{{/classes.static_dhcp_mapping}}
 
 {{#vars.dhcp.template_data.mac_mappings}}
 host {{name}}.{{vars.def.domain}} {
@@ -139,6 +136,18 @@ host {{name}}.{{vars.def.domain}} {
      fixed-address {{ip_addr}};
 }
 {{/vars.dhcp.template_data.mac_mappings}}
+
+{{/classes.static_dhcp_mapping}}
+
+{{^classes.static_dhcp_mapping}}
+#
+# utan static_dhcp_mapping
+#
+subnet 192.168.1.0 netmask 255.255.255.0 {
+  range 192.168.1.10 192.168.1.20;
+  option routers 192.168.1.1;
+}
+{{/classes.static_dhcp_mapping}}
 ";
 }
 
