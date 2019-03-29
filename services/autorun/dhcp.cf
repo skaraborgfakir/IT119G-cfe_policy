@@ -1,7 +1,7 @@
 #
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-29 10:14:17 nsa>
+# Time-stamp: <2019-03-29 10:25:48 nsa>
 #
 
 bundle agent dhcp
@@ -97,7 +97,7 @@ bundle edit_line dhcpd_conf
 #
 # def.json tidsstämpel: {{{vars.def.timestamp}}}
 # host.json tidsstämpel: {{{vars.dhcp.template_data.timestamp}}}
-# senast uppdatering av policy: {{sys.last_policy_update}}
+# senast uppdatering av policy: {{vars.sys.last_policy_update}}
 #
 # cfe-regler från {{vars.sys.policy_hub}}
 #
@@ -124,6 +124,14 @@ subnet 192.168.1.0 netmask 255.255.255.0 {
   range 192.168.1.65 192.168.1.126;
   option routers 192.168.1.1;
 }
+
+{{#classes.static_dhcp_mapping}}
+# med static_dhcp_mapping
+{{/classes.static_dhcp_mapping}}
+
+{{^classes.static_dhcp_mapping}}
+# utan static_dhcp_mapping
+{{/classes.static_dhcp_mapping}}
 
 {{#vars.dhcp.template_data.mac_mappings}}
 host {{name}}.{{vars.def.domain}} {
