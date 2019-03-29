@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-21 18:03:52 nsa>
+# Time-stamp: <2019-03-29 10:19:12 nsa>
 #
 
 bundle agent system_upgrade
@@ -12,8 +12,7 @@ bundle agent system_upgrade
     ubuntu::
       "/usr/bin/apt-get"
 	args =>"update",
-	unless => "apt_get_upgrade_disabled";
-
+	unless => "apt_get_update_disabled";
       "/usr/bin/apt-get"
 	args =>"--assume-yes upgrade",
 	unless => "apt_get_upgrade_disabled";
