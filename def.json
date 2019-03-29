@@ -1,6 +1,6 @@
 {
     "vars": {
-	"timestamp": "Time-stamp: <2019-03-21 18:02:14 nsa>",
+	"timestamp": "Time-stamp: <2019-03-29 10:19:32 nsa>",
 	"domain": "b18steni.it119g.nsa.his.se",
 	"dns_nameserver": [
 	    "192.168.2.22",
@@ -25,8 +25,10 @@
 	"services_autorun": [ "any" ],
 
 	"yum_check_update_disabled": [ "notnow" ],
-	"yum_upgrade_disabled": [ "notnow" ],
-	"apt_get_upgrade_disabled": [ "notnow" ]
+	"yum_upgrade_disabled":      [ "any" ],
+
+	"apt_get_update_disabled":   [ "notnow" ],
+	"apt_get_upgrade_disabled":  [ "any" ]
 
 	"WWW_services": [ "webserver01" ],
 
