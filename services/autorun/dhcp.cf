@@ -1,4 +1,8 @@
+#
 # -*-cfengine-*-
+#
+# Time-stamp: <2019-03-29 10:14:17 nsa>
+#
 
 bundle agent dhcp
 {
@@ -8,7 +12,7 @@ bundle agent dhcp
   vars:
     any::
       "template_data"
-		 data => readjson("$(this.promise_dirname)/hosts.json");
+	   data => readjson("$(this.promise_dirname)/hosts.json");
 
   files:
     DHCP_server::
@@ -16,28 +20,28 @@ bundle agent dhcp
       # spara undan dist-versionen av filerna
       #
       "/etc/default/isc-dhcp-server.saved_dist_version"
-	       unless => fileexists("/etc/default/isc-dhcp-server.saved_dist_version"),
-	    copy_from => local_dcp("/etc/default/isc-dhcp-server"),
-	      comment => "save dist versionen";
+	 unless => fileexists("/etc/default/isc-dhcp-server.saved_dist_version"),
+      copy_from => local_dcp("/etc/default/isc-dhcp-server"),
+	comment => "save dist versionen";
 
       "/etc/dhcp/dhcpd.conf.saved_dist_version"
-	       unless => fileexists("/etc/dhcp/dhcpd.conf.saved_dist_version"),
-	    copy_from => local_dcp("/etc/dhcp/dhcpd.conf"),
-	      comment => "save dist versionen";
+	 unless => fileexists("/etc/dhcp/dhcpd.conf.saved_dist_version"),
+      copy_from => local_dcp("/etc/dhcp/dhcpd.conf"),
+	comment => "save dist versionen";
 
       #
       # etc/default/isc-dhcp-server
       #
       "/etc/default/isc-dhcp-server.tmpl.mustache"
-	       create => "true",
-	edit_defaults => empty,
-	    edit_line => default_isc_dhcp_server;
+	 create => "true",
+  edit_defaults => empty,
+      edit_line => default_isc_dhcp_server;
 
       "/etc/default/isc-dhcp-server"
-	       create => "true",
-	edit_defaults => empty,
-      template_method => "mustache",
-	edit_template => "/etc/default/isc-dhcp-server.tmpl.mustache";
+	 create => "true",
+  edit_defaults => empty,
+template_method => "mustache",
+  edit_template => "/etc/default/isc-dhcp-server.tmpl.mustache";
 
       "/etc/default/isc-dhcp-server.tmpl.mustache" perms => m("444");
       "/etc/default/isc-dhcp-server"               perms => m("444");
@@ -46,16 +50,16 @@ bundle agent dhcp
       # etcd/dhcp/dhcpd.conf
       #
       "$(template_data[dhcpd_conf_file]).tmpl.mustache"
-	       create => "true",
-	edit_defaults => empty,
-	    edit_line => dhcpd_conf;
+	 create => "true",
+  edit_defaults => empty,
+      edit_line => dhcpd_conf;
 
       "$(template_data[dhcpd_conf_file])"
-	       create => "true",
-	edit_defaults => empty,
-      template_method => "mustache",
-	edit_template => "$(template_data[dhcpd_conf_file]).tmpl.mustache",
-	      classes => results("bundle", "dhcpd_conf_changed");
+	 create => "true",
+  edit_defaults => empty,
+template_method => "mustache",
+  edit_template => "$(template_data[dhcpd_conf_file]).tmpl.mustache",
+	classes => results("bundle", "dhcpd_conf_changed");
 
       "$(template_data[dhcpd_conf_file]).tmpl.mustache" perms => m("444");
       "$(template_data[dhcpd_conf_file])"               perms => m("444");
@@ -63,26 +67,26 @@ bundle agent dhcp
   packages:
     DHCP_server::
       "isc-dhcp-server"
-	       policy => "present",
-	      classes => results("namespace", "isc_dhcp_server_installed"),
-       package_module => apt_get,
-		 meta => { "dhcp" };
+	 policy => "present",
+	classes => results("namespace", "isc_dhcp_server_installed"),
+ package_module => apt_get,
+	   meta => { "dhcp" };
 
   services:
     DHCP_server::
       "isc-dhcp-server"
-	   ifvarclass => "isc_dhcp_server_installed_repaired",
-       service_policy => "enable";
+     ifvarclass => "isc_dhcp_server_installed_repaired",
+ service_policy => "enable";
 
       "isc-dhcp-server"
-       service_policy => "restart",
-	   ifvarclass => "dhcpd_conf_changed_repaired";
+ service_policy => "restart",
+     ifvarclass => "dhcpd_conf_changed_repaired";
 
   reports:
     verbose_mode|DEBUG|DEBUG_b18steni::
       "$(this.bundle): Hello, this is an automatically loaded bundle";
       "$(this.bundle): isc-dhcpd:s configuration ändrades"
-	   ifvarclass => "dhcpd_conf_changed_repaired";
+     ifvarclass => "dhcpd_conf_changed_repaired";
 }
 
 bundle edit_line dhcpd_conf
@@ -138,7 +142,7 @@ bundle edit_line default_isc_dhcp_server
 #
 # def.json tidsstämpel: {{{vars.def.timestamp}}}
 # host.json tidsstämpel: {{{vars.dhcp.template_data.timestamp}}}
-# senast uppdatering av policy: {{sys.last_policy_update}}
+# senast uppdatering av policy: {{vars.sys.last_policy_update}}
 #
 # cfe-regler från {{vars.sys.policy_hub}}
 #
@@ -156,4 +160,5 @@ INTERFACES={{vars.dhcp.template_data.dhcpd_listen_iface}}
 
 # Local Variables:
 # mode:cfengine
+# cfengine-parameters-indent: (promise arrow 10)
 # End:
