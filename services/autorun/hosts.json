@@ -1,6 +1,7 @@
 {
-    "timestamp":      "Time-stamp: <2019-01-31 21:23:57 nsa>",
-    "dns_nameserver": "192.168.2.22",
+    "timestamp":      "Time-stamp: <2019-03-29 10:42:47 nsa>",
+    "dns_nameserver_labbets": [ "10.0.252.201", "10.0.252.201" ],
+    "dns_nameserver_my_own":  [ "192.168.2.22" ],
     "hosts":
     [
 	{ "name": "pc01",        "ip_addr": "192.168.1.11", "use_dhcp": "any",    "dns_resolvable": "false"},
