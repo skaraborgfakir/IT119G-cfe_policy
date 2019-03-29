@@ -1,5 +1,5 @@
 #
-# Time-stamp: <2019-03-29 13:17:22 nsa>
+# Time-stamp: <2019-03-29 13:19:15 nsa>
 #
 
 bundle agent bind
@@ -175,7 +175,7 @@ bundle edit_line named_conf
 {
   insert_lines:
       "//
-// avsedd för {{vars.sys.fqhost}}
+// avsedd for {{vars.sys.fqhost}}
 //
 // cfe-regler från {{vars.sys.policy_hub}}
 // senast uppdatering av policy: {{sys.last_policy_update}}
@@ -197,9 +197,9 @@ bundle edit_line named_conf_local
 {
   insert_lines:
       "//
-// avsedd för {{vars.sys.fqhost}}
+// avsedd for {{vars.sys.fqhost}}
 //
-// cfe-regler från {{vars.sys.policy_hub}}
+// cfe-regler fran {{vars.sys.policy_hub}}
 // senast uppdatering av policy: {{sys.last_policy_update}}
 //
 
@@ -219,9 +219,9 @@ bundle edit_line named_conf_options
 {
   insert_lines:
       "//
-// avsedd för {{vars.sys.fqhost}}
+// avsedd for {{vars.sys.fqhost}}
 //
-// cfe-regler från {{vars.sys.policy_hub}}
+// cfe-regler fran {{vars.sys.policy_hub}}
 // senast uppdatering av policy: {{sys.last_policy_update}}
 //
 
