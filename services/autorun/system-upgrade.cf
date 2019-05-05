@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-05-05 17:09:33 nsa>
+# Time-stamp: <2019-05-05 17:36:52 nsa>
 #
 
 bundle agent system_upgrade
@@ -25,6 +25,17 @@ bundle agent system_upgrade
       "/usr/bin/yum"
 	args =>"--assumeyes --quiet upgrade",
 	unless => "yum_upgrade_disabled";
+
+  reports:
+    apt_get_update_disabled::
+      "apt_get_update_disabled is ON";
+    apt_get_upgrade_disabled::
+      "apt_get_upgrade_disabled is ON";
+
+    yum_check_update_disabled::
+      "yum_check_update_disabled is ON";
+    yum_upgrade_disabled::
+      "yum_upgrade_disabled is ON";
 }
 
 # Local Variables:
