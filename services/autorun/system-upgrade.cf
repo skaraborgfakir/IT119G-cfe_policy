@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-29 10:19:12 nsa>
+# Time-stamp: <2019-05-05 17:09:33 nsa>
 #
 
 bundle agent system_upgrade
@@ -14,7 +14,7 @@ bundle agent system_upgrade
 	args =>"update",
 	unless => "apt_get_update_disabled";
       "/usr/bin/apt-get"
-	args =>"--assume-yes upgrade",
+	args =>"--assume-yes --no-install-recommends upgrade",
 	unless => "apt_get_upgrade_disabled";
 
     redhat::
