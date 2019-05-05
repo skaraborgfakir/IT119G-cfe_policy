@@ -1,7 +1,6 @@
-#
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-29 12:25:58 nsa>
+# Time-stamp: <2019-05-05 18:00:34 nsa>
 #
 
 bundle agent dhcp
@@ -12,7 +11,8 @@ bundle agent dhcp
   vars:
     any::
       "template_data"
-	   data => readjson("$(this.promise_dirname)/hosts.json");
+	   data => readjson("$(this.promise_dirname)/hosts.json"),
+	   meta => {"dhcp"};
 
   files:
     DHCP_server::
@@ -22,12 +22,14 @@ bundle agent dhcp
       "/etc/default/isc-dhcp-server.saved_dist_version"
 	 unless => fileexists("/etc/default/isc-dhcp-server.saved_dist_version"),
       copy_from => local_dcp("/etc/default/isc-dhcp-server"),
-	comment => "save dist versionen";
+	comment => "save dist versionen",
+	   meta => {"dhcp"};
 
       "/etc/dhcp/dhcpd.conf.saved_dist_version"
 	 unless => fileexists("/etc/dhcp/dhcpd.conf.saved_dist_version"),
       copy_from => local_dcp("/etc/dhcp/dhcpd.conf"),
-	comment => "save dist versionen";
+	comment => "save dist versionen",
+	   meta => {"dhcp"};
 
       #
       # etc/default/isc-dhcp-server
@@ -35,13 +37,15 @@ bundle agent dhcp
       "/etc/default/isc-dhcp-server.tmpl.mustache"
 	 create => "true",
   edit_defaults => empty,
-      edit_line => default_isc_dhcp_server;
+      edit_line => default_isc_dhcp_server,
+	   meta => {"dhcp"};
 
       "/etc/default/isc-dhcp-server"
 	 create => "true",
   edit_defaults => empty,
 template_method => "mustache",
-  edit_template => "/etc/default/isc-dhcp-server.tmpl.mustache";
+  edit_template => "/etc/default/isc-dhcp-server.tmpl.mustache",
+	   meta => {"dhcp"};
 
       "/etc/default/isc-dhcp-server.tmpl.mustache" perms => m("444");
       "/etc/default/isc-dhcp-server"               perms => m("444");
@@ -52,14 +56,16 @@ template_method => "mustache",
       "$(template_data[dhcpd_conf_file]).tmpl.mustache"
 	 create => "true",
   edit_defaults => empty,
-      edit_line => dhcpd_conf;
+      edit_line => dhcpd_conf,
+	   meta => {"dhcp"};
 
       "$(template_data[dhcpd_conf_file])"
 	 create => "true",
   edit_defaults => empty,
 template_method => "mustache",
   edit_template => "$(template_data[dhcpd_conf_file]).tmpl.mustache",
-	classes => results("bundle", "dhcpd_conf_changed");
+	classes => results("bundle", "dhcpd_conf_changed"),
+	   meta => {"dhcp"};
 
       "$(template_data[dhcpd_conf_file]).tmpl.mustache" perms => m("444");
       "$(template_data[dhcpd_conf_file])"               perms => m("444");
@@ -76,11 +82,13 @@ template_method => "mustache",
     DHCP_server::
       "isc-dhcp-server"
      ifvarclass => "isc_dhcp_server_installed_repaired",
- service_policy => "enable";
+ service_policy => "enable",
+	   meta => {"dhcp"};
 
       "isc-dhcp-server"
  service_policy => "restart",
-     ifvarclass => "dhcpd_conf_changed_repaired";
+     ifvarclass => "dhcpd_conf_changed_repaired",
+	   meta => {"dhcp"};
 
   reports:
     verbose_mode|DEBUG|DEBUG_b18steni::
