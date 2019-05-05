@@ -1,6 +1,6 @@
 {
     "vars": {
-	"timestamp": "Time-stamp: <2019-05-05 17:53:13 nsa>",
+	"timestamp": "Time-stamp: <2019-05-05 18:02:02 nsa>",
 	"domain": "b18steni.it119g.nsa.his.se",
 	"dns_nameserver": [
 	    "192.168.2.22",
@@ -24,8 +24,8 @@
 	"cfengine_internal_masterfiles_update": [ "any" ],
 	"services_autorun": [ "any" ],
 
-	"apt_get_update_disabled":   [ "cfengine|dhcp01|ns01|pc01|pc02|vcs|webserver01" ],
-	"apt_get_upgrade_disabled":  [ "cfengine|dhcp01|ns01|pc01|pc02|vcs|webserver01" ],
+	"apt_get_update_disabled":   [ "cfengine|dhcp01|pc01|pc02|vcs|webserver01" ],
+	"apt_get_upgrade_disabled":  [ "cfengine|dhcp01|pc01|pc02|vcs|webserver01" ],
 
 	"yum_check_update_disabled": [ "cfengine|dhcp01|ns01|pc01|pc02|vcs|webserver01" ],
 	"yum_upgrade_disabled":      [ "cfengine|dhcp01|ns01|pc01|pc02|vcs|webserver01" ],
