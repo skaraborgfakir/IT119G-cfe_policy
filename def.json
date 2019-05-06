@@ -1,6 +1,6 @@
 {
     "vars": {
-	"timestamp": "Time-stamp: <2019-05-06 12:08:13 nsa>",
+	"timestamp": "Time-stamp: <2019-05-06 12:09:15 nsa>",
 	"domain": "b18steni.it119g.nsa.his.se",
 	"dns_nameserver": [
 	    "192.168.2.22",
@@ -24,8 +24,11 @@
 	"cfengine_internal_masterfiles_update": [ "any" ],
 	"services_autorun": [ "any" ],
 
-	"apt_get_update_disabled": [ "pc01",
-				     "pc02" ],
+	"apt_get_update_disabled": [ "dhcp01",
+				     "ns01",
+				     "pc01",
+				     "pc02",
+				     "webserver01" ],
 	"apt_get_upgrade_disabled": [ "dhcp01",
 				      "ns01",
 				      "pc01",
