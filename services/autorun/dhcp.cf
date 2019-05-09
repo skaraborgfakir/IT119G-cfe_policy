@@ -1,5 +1,5 @@
 #
-# Time-stamp: <2019-05-09 21:31:43 nsa>
+# Time-stamp: <2019-05-09 21:52:44 nsa>
 #
 
 bundle agent dhcp
@@ -124,7 +124,7 @@ option domain-name-servers 10.0.252.201, 10.0.252.201;
 option domain-name-servers {{vars.dhcp.template_data.dns_nameserver_my_own}};
 {{/classes.DHCP_use_my_own_dns}}
 
-option ntp-servers 194.58.203.20;
+option ntp-servers 194.58.203.20; # föredrar gbg1.ntp.se
 default-lease-time 600;
 max-lease-time 7200;
 
@@ -157,8 +157,7 @@ host {{name}}.{{vars.def.domain}} {
 subnet 192.168.1.0 netmask 255.255.255.0 {
   range 192.168.1.10 192.168.1.20;
   option routers 192.168.1.1;
-}
-{{/classes.static_dhcp_mapping}}
+}{{/classes.static_dhcp_mapping}}
 ";
 }
 
