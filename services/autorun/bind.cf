@@ -1,5 +1,5 @@
 #
-# Time-stamp: <2019-05-09 22:11:31 nsa>
+# Time-stamp: <2019-05-09 22:12:48 nsa>
 #
 
 bundle agent bind
@@ -331,7 +331,7 @@ bundle edit_line default_isc_bind_server
 RESOLVCONF=no
 
 # startup options for the server
-OPTIONS="-u bind"
+OPTIONS=\"-u bind\"
 ";
 }
 
