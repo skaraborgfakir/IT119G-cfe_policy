@@ -1,8 +1,13 @@
 {
-    "timestamp":                "Time-stamp: <2019-05-09 21:47:37 nsa>",
+    "timestamp":                "Time-stamp: <2019-05-09 22:07:50 nsa>",
     "dns_nameserver_labbets": [ "10.0.252.201", "10.0.252.201" ],
     "dns_nameserver_my_own":    "192.168.2.22",
-    "DNS_serial":               "2019050901",
+
+    "DNS_serial":              "2019050901",
+    "DNS_refresh":             "30m",
+    "DNS_retry":               "3m",
+    "DNS_expire":              "2w",
+    "DNS_minimum":             "1h",
     
     "dhcpd_systemd_sercvice":  "/lib/systemd/isc-dhcp-server",
     "dhcpd_etc_default":       "/etc/default/isc-dhcp-server",
