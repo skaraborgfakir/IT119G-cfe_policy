@@ -1,6 +1,6 @@
 {
     "vars": {
-	"timestamp": "Time-stamp: <2019-05-06 12:09:15 nsa>",
+	"timestamp": "Time-stamp: <2019-05-09 20:46:10 nsa>",
 	"domain": "b18steni.it119g.nsa.his.se",
 	"dns_nameserver": [
 	    "192.168.2.22",
@@ -21,6 +21,8 @@
 	]
     },
     "classes": {
+	"default_data_select_host_monitoring_include": [ ".*" ],
+
 	"cfengine_internal_masterfiles_update": [ "any" ],
 	"services_autorun": [ "any" ],
 
