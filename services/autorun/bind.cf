@@ -1,5 +1,5 @@
 #
-# Time-stamp: <2019-03-29 13:19:15 nsa>
+# Time-stamp: <2019-05-09 21:56:55 nsa>
 #
 
 bundle agent bind
@@ -8,152 +8,180 @@ bundle agent bind
       "tags" slist => { "autorun" };
 
   vars:
-    !any.disable_DNS_server::
-      "prefix"
-	string => "/var/cfengine/testings";
-
     any::
-      "prefix"
-	string => "",
-	unless => isvariable("prefix");
-
       "template_data"
-	data => readjson("$(this.promise_dirname)/hosts.json");
+	   data => readjson("$(this.promise_dirname)/hosts.json");
 
-      "controlled_files"
-	slist => { "/etc/bind/named.conf",
-		   "/etc/bind/named.conf.local",
-		   "/etc/bind/named.conf.options",
-		   "/etc/bind/named.conf.default-zones"};
+      "controlled_files_system"
+	  slist =>  { "/etc/default/bind9",
+		      "/lib/systemd/system/bind9.service"},
+	comment => "systemd relaterade startfiler för bind9",
+	   meta => { "DNS", "bind"};
+
+      "controlled_files_bind"
+	  slist =>  { "named.conf",	
+		      "named.conf.local",
+		      "named.conf.options",
+		      "named.conf.default-zones"},
+	comment => "bind9:s egen konf",
+	   meta => { "DNS", "bind"};
+
+      "controlled_zones"
+	  slist =>  { "b18steni.it119g.nsa.his.se",
+		      "168.192.in-addr.arpa"},
+	comment => "kontrollerade DNS:zoner",
+	   meta => { "DNS", "zones"};
+
+      "zone_templates[$(controlled_zones)]"
+	 string => "$(controlled_zones).tmpl",
+	   meta => { "DNS", "zones"};
 
   files:
-    DNS_server::
-      "$(prefix)/."
-	create => "true";
+      #
+      # controlled_files_system
+      #
+      # DNS_server::
+      #   "$(controlled_files_system)"
+      # 	   meta => { "bind", "DNS"};
 
     DNS_server::
-      "$(controlled_files).saved_dist_version"
-	unless => fileexists("$(controlled_files).saved_dist_version"),
-	copy_from => local_dcp("$(controlled_files)"),
-	comment => "save dist versionen";
-
-      "$(controlled_files).saved_dist_version"
-	perms => m("444");
+      #
+      # controlled_files_bind
+      #
+      # spara undan dist:versionen av konf-filen
+      #
+      "/etc/bind/$(controlled_files_bind).saved_dist_version"
+	 unless => fileexists("/etc/bind/$(controlled_files_bind).saved_dist_version"),
+      copy_from => local_dcp("/etc/bind/$(controlled_files_bind)"),
+	comment => "save dist versionen",
+	   meta => { "DNS", "bind"};
+      "/etc/bind/$(controlled_files_bind).saved_dist_version"
+	  perms => m("444"),
+     ifvarclass => fileexists("/etc/bind/$(controlled_files_bind).saved_dist_version"),
+	   meta => { "DNS", "bind"};
 
       #
       # named.conf
       #
-      "$(prefix)/etc/bind/named.conf.tmpl.mustache"
-	create => "true",
-	edit_defaults => empty,
-	edit_line => named_conf,
-	meta => { "bind" };
+      "/etc/bind/named.conf.tmpl.mustache"
+	 create => "true",
+  edit_defaults => empty,
+      edit_line => named_conf_tmpl,
+	   meta => { "DNS", "bind"};
 
-      "$(prefix)/etc/bind/named.conf"
-	create => "true",
-	edit_defaults => empty,
-	template_method => "mustache",
-	edit_template => "$(prefix)/etc/bind/named.conf.tmpl.mustache",
-	classes => results("bundle", "bind9_config"),
-	meta => { "bind" };
+      "/etc/bind/named.conf"
+	 create => "true",
+  edit_defaults => empty,
+template_method => "mustache",
+  edit_template => "/etc/bind/named.conf.tmpl.mustache",
+	classes => results( "bundle", "bind9_config"),
+	   meta => { "DNS", "bind"};
 
       #
       # named.conf.options
       #
-      "$(prefix)/etc/bind/named.conf.options.tmpl.mustache"
-	create => "true",
-	edit_defaults => empty,
-	edit_line => named_conf_options,
-	meta => { "bind" };
+      "/etc/bind/named.conf.options.tmpl.mustache"
+	 create => "true",
+  edit_defaults => empty,
+      edit_line => named_conf_options_tmpl,
+	   meta => { "DNS", "bind"};
 
-      "$(prefix)/etc/bind/named.conf.options"
-	create => "true",
-	edit_defaults => empty,
-	template_method => "mustache",
-	edit_template => "$(prefix)/etc/bind/named.conf.options.tmpl.mustache",
+      "/etc/bind/named.conf.options"
+	 create => "true",
+  edit_defaults => empty,
+template_method => "mustache",
+  edit_template => "/etc/bind/named.conf.options.tmpl.mustache",
 	classes => results("bundle", "bind9_config"),
-	meta => { "bind" };
+      	   meta => { "DNS", "bind"};
 
       #
       # named.conf.local
       #
-      "$(prefix)/etc/bind/named.conf.local.tmpl.mustache"
-	create => "true",
-	edit_defaults => empty,
-	edit_line => named_conf_local,
-	meta => { "bind" };
+      "/etc/bind/named.conf.local.tmpl.mustache"
+	 create => "true",
+  edit_defaults => empty,
+      edit_line => named_conf_local_tmpl,
+	   meta => { "bind", "DNS"};
 
-      "$(prefix)/etc/bind/named.conf.local"
-	create => "true",
-	edit_defaults => empty,
-	template_method => "mustache",
-	edit_template => "$(prefix)/etc/bind/named.conf.local.tmpl.mustache",
+      "/etc/bind/named.conf.local"
+	 create => "true",
+  edit_defaults => empty,
+template_method => "mustache",
+  edit_template => "/etc/bind/named.conf.local.tmpl.mustache",
 	classes => results("bundle", "bind9_config"),
-	meta => { "bind" };
+	   meta => { "bind", "DNS"};
 
+      "$(controlled_files_bind)" 
+	  perms => mog("444", "root", "bind"),
+     ifvarclass => fileexists("$(controlled_files_bind)"),
+      	   meta => { "DNS", "bind"};
+      "$(controlled_files_bind).tmpl.mustache" 
+	  perms => mog("444", "root", "bind"),
+     ifvarclass => fileexists("$(controlled_files_bind).tmpl.mustache"),
+      	   meta => { "DNS", "bind"};
+
+    DNS_server::
       #
-      # named.conf.local
+      # controlled_zones
       #
-      "/etc/bind/zones/db.b18steni.tmpl.mustache"
-	create => "true",
-	edit_defaults => empty,
-	edit_line => b18steni_zon;
-
-      "/etc/bind/zones/db.b18steni"
-	create => "true",
-	edit_defaults => empty,
-	template_method => "mustache",
-	edit_template => "/etc/bind/zones/db.b18steni.tmpl.mustache",
+      "/etc/bind/zones/db.b18steni.it119g.nsa.his.se.tmpl.mustache"
+	 create => "true",
+  edit_defaults => empty,
+      edit_line => db_b18steni_it119g_nsa_his_se_tmpl,
+      	   meta => { "DNS", "bind"};
+      "/etc/bind/zones/db.b18steni.it119g.nsa.his.se"
+	 create => "true",
+  edit_defaults => empty,
+template_method => "mustache",
+  edit_template => "/etc/bind/zones/db.b18steni.it119g.nsa.his.se.tmpl.mustache",
 	classes => results("bundle", "bind9_zone_data"),
-	meta => { "bind" };
+      	   meta => { "DNS", "zone"};
 
-      "/etc/bind/zones/db.b18steni_192_rev.tmpl.mustache"
-	create => "true",
-	edit_defaults => empty,
-	edit_line => b18steni_192_rev_zon;
-
-      "/etc/bind/zones/db.b18steni_192_rev"
-	create => "true",
-	edit_defaults => empty,
-	template_method => "mustache",
-	edit_template => "/etc/bind/zones/db.b18steni_192_rev.tmpl.mustache",
+      "/etc/bind/zones/db.168.192.in-addr.arpa.tmpl.mustache"
+	 create => "true",
+  edit_defaults => empty,
+      edit_line => 168_192_in_addr_arpa,
+      "/etc/bind/zones/db.168.192.in-addr.arpa"
+	 create => "true",
+  edit_defaults => empty,
+template_method => "mustache",
+  edit_template => "/etc/bind/zones/db.168.192.in-addr.arpa.tmpl.mustache",
 	classes => results("bundle", "bind9_zone_data"),
-	meta => { "bind" };
+	   meta => { "bind" };
 
-      "$(prefix)$(controlled_files)"              perms => mog("444", "root", "bind");
-      "/etc/bind/zones/db.b18steni.tmpl.mustache" perms => mog("444", "root", "bind");
-      "/etc/bind/zones/db.b18steni"               perms => mog("444", "root", "bind");
-      "/etc/bind/zones/db.b18steni_192_rev"       perms => mog("444", "root", "bind");
+      "/etc/bind/zones/db.b18steni.tmpl.mustache" perms => mog( "444", "root", "bind");
+      "/etc/bind/zones/db.b18steni"               perms => mog( "444", "root", "bind");
+      "/etc/bind/zones/db.b18steni_192_rev"       perms => mog( "444", "root", "bind");
 
   packages:
     DNS_server::
       "bind9"
-	policy => "present",
-	package_module => apt_get,
+	 policy => "present",
+ package_module => apt_get,
 	classes => results("bundle", "bind9_installed"),
-	meta => { "bind" };
+	   meta => { "bind" };
 
   processes:
       ".*named"
-	process_select => named_selector,
-	restart_class => "bind9_proc_missing";
+ process_select => named_selector,
+  restart_class => "bind9_proc_missing";
 
   services:
     DNS_server::
       "bind9"
-	ifvarclass => "bind9_proc_missing|bind9_installed_repaired",
-	service_policy => "enable";
+     ifvarclass => "bind9_proc_missing|bind9_installed_repaired",
+ service_policy => "enable";
 
       "bind9"
-	ifvarclass => "bind9_proc_missing|bind9_config_repaired",
-	service_policy => "restart";
+     ifvarclass => "bind9_proc_missing|bind9_config_repaired",
+ service_policy => "restart";
 
   commands:
     DNS_server::
       "/usr/sbin/rndc"
-	args => "reload",
-	ifvarclass => "bind9_zone_data_repaired",
-	meta => {"bind"};
+	   args => "reload",
+     ifvarclass => "bind9_zone_data_repaired",
+	   meta => {"bind"};
 
   reports:
     verbose_mode|DEBUG|default:DEBUG::
@@ -167,18 +195,18 @@ bundle agent bind
 body process_select named_selector
 {
 	command => "named";
-	process_owner => {"bind"};
-	process_result => "process_owner.command";
+  process_owner => {"bind"};
+ process_result => "process_owner.command";
 }
 
-bundle edit_line named_conf
+bundle edit_line named_conf_tmpl
 {
   insert_lines:
       "//
 // avsedd for {{vars.sys.fqhost}}
 //
 // cfe-regler från {{vars.sys.policy_hub}}
-// senast uppdatering av policy: {{sys.last_policy_update}}
+// senast uppdatering av policy: {{vars.sys.last_policy_update}}
 //
 // This is the primary configuration file for the BIND DNS server named.
 //
@@ -193,36 +221,14 @@ include \"/etc/bind/named.conf.default-zones\";
 ";
 }
 
-bundle edit_line named_conf_local
+bundle edit_line named_conf_options_tmpl
 {
   insert_lines:
       "//
 // avsedd for {{vars.sys.fqhost}}
 //
 // cfe-regler fran {{vars.sys.policy_hub}}
-// senast uppdatering av policy: {{sys.last_policy_update}}
-//
-
-zone \"b18steni.it119g.nsa.his.se\" {
-type master;
-file \"/etc/bind/zones/db.b18steni\";
-};
-
-zone \"168.192.in-addr.arpa\" {
-type master;
-file \"/etc/bind/zones/db.b18steni_192_rev\";
-};
-";
-}
-
-bundle edit_line named_conf_options
-{
-  insert_lines:
-      "//
-// avsedd for {{vars.sys.fqhost}}
-//
-// cfe-regler fran {{vars.sys.policy_hub}}
-// senast uppdatering av policy: {{sys.last_policy_update}}
+// senast uppdatering av policy: {{vars.sys.last_policy_update}}
 //
 
 acl my_computers { 192.168.0.0/16; 10.204.12.0/24; 10.204.20.0/24; };
@@ -244,7 +250,29 @@ options {
 };";
 }
 
-bundle edit_line b18steni_zon
+bundle edit_line named_conf_local_tmpl,
+{
+  insert_lines:
+      "//
+// avsedd for {{vars.sys.fqhost}}
+//
+// cfe-regler fran {{vars.sys.policy_hub}}
+// senast uppdatering av policy: {{vars.sys.last_policy_update}}
+//
+
+zone \"b18steni.it119g.nsa.his.se\" {
+type master;
+file \"/etc/bind/zones/db.b18steni\";
+};
+
+zone \"168.192.in-addr.arpa\" {
+type master;
+file \"/etc/bind/zones/db.b18steni_192_rev\";
+};
+";
+}
+
+bundle edit_line db_b18steni_it119g_nsa_his_se_tmpl
 {
   insert_lines:
       "
@@ -262,7 +290,7 @@ $TTL 10
 ";
 }
 
-bundle edit_line b18steni_192_rev_zon
+bundle edit_line db_168_192_in_addr_arpa_tmpl
 {
   insert_lines:
       "
@@ -288,6 +316,47 @@ $TTL 10
 ";
 }
 
+bundle edit_line default_isc_bind_server
+{
+  insert_lines:
+      "#
+# avsedd för {{vars.sys.fqhost}}
+#
+# def.json tidsstämpel: {{{vars.def.timestamp}}}
+# host.json tidsstämpel: {{{vars.dhcp.template_data.timestamp}}}
+# senast uppdatering av policy: {{vars.sys.last_policy_update}}
+#
+# cfe-regler från {{vars.sys.policy_hub}}
+#
+# run resolvconf?
+RESOLVCONF=no
+
+# startup options for the server
+OPTIONS="-u bind"
+";
+}
+
+bundle edit_line default_bind_systemd_service
+{
+  insert_lines:
+      "#
+# avsedd för {{vars.sys.fqhost}}
+#
+# def.json tidsstämpel: {{{vars.def.timestamp}}}
+# host.json tidsstämpel: {{{vars.dhcp.template_data.timestamp}}}
+# senast uppdatering av policy: {{vars.sys.last_policy_update}}
+#
+# cfe-regler från {{vars.sys.policy_hub}}
+#
+# run resolvconf?
+RESOLVCONF=no
+
+# startup options for the server
+OPTIONS="-u bind"
+";
+}
+
 # Local Variables:
-# mode:cfengine
+# mode: cfengine
+# cfengine-parameters-indent: (promise arrow 10)
 # End:
