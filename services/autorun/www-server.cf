@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-21 17:41:34 nsa>
+# Time-stamp: <2019-05-09 20:28:55 nsa>
 #
 # garantera apache
 #
@@ -10,43 +10,41 @@ bundle agent www_server
   meta:
       "tags" slist => { "autorun" };
 
-  classes:
-    WWW_services::
-      "var_www_html_index_exists"
-	expression => fileexists("/var/www/html/index.html");
-
-      "var_www_html_test_exists"
-	expression => fileexists("/var/www/html/mytextfile.txt");
-
   files:
-    WWW_services::
-      "/var/www/html/test.html"
-	create => "true",
-	edit_line => html_test,
-	edit_defaults => empty;
-
-      "/var/www/html/test.html"
-	perms => m("444");
-
+     WWW_services::
       "/var/www/html/mytextfile.txt"
-	create => "true",
-	edit_line => html_mytextfile_test,
-	edit_defaults => empty;
-
+	 create => "true",
+      edit_line => html_mytextfile,
+  edit_defaults => empty,
+     ifvarclass => fileexists("/var/www/html/."),
+	   meta => { "httpd", "traffic tracing"};
       "/var/www/html/mytextfile.txt"
-	perms => m("444");
+	  perms => m("444"),
+	   meta => { "httpd", "traffic tracing"};
 
+      "/var/www/html/test.html"
+	 create => "true",
+      edit_line => html_test,
+  edit_defaults => empty,
+     ifvarclass => fileexists("/var/www/html/."),
+	   meta => { "httpd", "traffic tracing"};
+      "/var/www/html/test.html"
+	  perms => m("444"),
+	   meta => { "httpd", "traffic tracing"};
+      
   packages:
     WWW_services::
       "apache2"
-	policy => "present",
-	classes => results("bundle", "apache_installation");
+	 policy => "present",
+	classes => results("bundle", "apache_installation"),
+	   meta => { "httpd", "traffic tracing"};
 
   services:
     WWW_services::
       "apache2"
-	service_policy => "enable",
-	ifvarclass => "apache_installation_repaired";
+ service_policy => "enable",
+     ifvarclass => "apache_installation_repaired",
+	   meta => { "httpd", "traffic tracing"};
 
   reports:
     verbose_mode|DEBUG|default:DEBUG::
@@ -55,11 +53,10 @@ bundle agent www_server
     webserver01.verbose_mode|webserver01.DEBUG|webserver01.default:DEBUG::
 }
 
-bundle edit_line html_mytextfile_test
+bundle edit_line html_mytextfile
 {
   insert_lines:
-      "
-<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\">
   <!--
   -->
@@ -85,8 +82,7 @@ MOdifieriad version av Ubuntu startsida för apache
 bundle edit_line html_test
 {
   insert_lines:
-      "
-<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
+      "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\">
   <!--
   -->
@@ -442,3 +438,8 @@ Ubuntu's Apache2 default configuration is different from the
 
 ";
 }
+
+# Local Variables:
+# mode: cfengine
+# cfengine-parameters-indent: (promise arrow 10)
+# End:
