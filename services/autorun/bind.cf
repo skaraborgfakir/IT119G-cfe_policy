@@ -1,5 +1,5 @@
 #
-# Time-stamp: <2019-05-09 22:12:48 nsa>
+# Time-stamp: <2019-05-09 22:14:06 nsa>
 #
 
 bundle agent bind
@@ -338,20 +338,19 @@ OPTIONS=\"-u bind\"
 bundle edit_line default_bind_systemd_service
 {
   insert_lines:
-      "#
-# avsedd för {{vars.sys.fqhost}}
-#
-# def.json tidsstämpel: {{{vars.def.timestamp}}}
-# host.json tidsstämpel: {{{vars.dhcp.template_data.timestamp}}}
-# senast uppdatering av policy: {{vars.sys.last_policy_update}}
-#
-# cfe-regler från {{vars.sys.policy_hub}}
-#
-# run resolvconf?
-RESOLVCONF=no
+      "[Unit]
+Description=BIND Domain Name Server
+Documentation=man:named(8)
+After=network.target
 
-# startup options for the server
-OPTIONS="-u bind"
+[Service]
+EnvironmentFile=/etc/default/bind9
+ExecStart=/usr/sbin/named -f $OPTIONS
+ExecReload=/usr/sbin/rndc reload
+ExecStop=/usr/sbin/rndc stop
+
+[Install]
+WantedBy=multi-user.target
 ";
 }
 
