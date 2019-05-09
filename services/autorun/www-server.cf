@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-05-09 20:28:55 nsa>
+# Time-stamp: <2019-05-09 20:33:41 nsa>
 #
 # garantera apache
 #
@@ -74,9 +74,8 @@ bundle edit_line html_mytextfile
 It works!
 
 MOdifieriad version av Ubuntu startsida för apache
-
 </body>
-";
+</html>";
 }
 
 bundle edit_line html_test
@@ -434,9 +433,7 @@ Ubuntu's Apache2 default configuration is different from the
     <div class=\"validator\">
     </div>
   </body>
-</html>
-
-";
+</html>";
 }
 
 # Local Variables:
