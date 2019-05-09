@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-05-09 20:33:41 nsa>
+# Time-stamp: <2019-05-09 20:40:20 nsa>
 #
 # garantera apache
 #
@@ -37,6 +37,11 @@ bundle agent www_server
       "apache2"
 	 policy => "present",
 	classes => results("bundle", "apache_installation"),
+	   meta => { "httpd", "traffic tracing"};
+
+      "lynx"
+	 policy => "present",
+	classes => results("bundle", "lynx_installation"),
 	   meta => { "httpd", "traffic tracing"};
 
   services:
