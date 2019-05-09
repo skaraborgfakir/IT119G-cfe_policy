@@ -1,6 +1,5 @@
-# -*-cfengine-*-
 #
-# Time-stamp: <2019-05-05 18:00:34 nsa>
+# Time-stamp: <2019-05-09 21:31:43 nsa>
 #
 
 bundle agent dhcp
@@ -11,93 +10,97 @@ bundle agent dhcp
   vars:
     any::
       "template_data"
-	   data => readjson("$(this.promise_dirname)/hosts.json"),
-	   meta => {"dhcp"};
+	     data => readjson("$(this.promise_dirname)/hosts.json"),
+	     meta => {"dhcp"};
 
   files:
     DHCP_server::
       #
       # spara undan dist-versionen av filerna
       #
-      "/etc/default/isc-dhcp-server.saved_dist_version"
-	 unless => fileexists("/etc/default/isc-dhcp-server.saved_dist_version"),
-      copy_from => local_dcp("/etc/default/isc-dhcp-server"),
-	comment => "save dist versionen",
-	   meta => {"dhcp"};
-
-      "/etc/dhcp/dhcpd.conf.saved_dist_version"
-	 unless => fileexists("/etc/dhcp/dhcpd.conf.saved_dist_version"),
-      copy_from => local_dcp("/etc/dhcp/dhcpd.conf"),
-	comment => "save dist versionen",
-	   meta => {"dhcp"};
-
-      #
-      # etc/default/isc-dhcp-server
-      #
-      "/etc/default/isc-dhcp-server.tmpl.mustache"
-	 create => "true",
-  edit_defaults => empty,
-      edit_line => default_isc_dhcp_server,
-	   meta => {"dhcp"};
-
-      "/etc/default/isc-dhcp-server"
-	 create => "true",
-  edit_defaults => empty,
-template_method => "mustache",
-  edit_template => "/etc/default/isc-dhcp-server.tmpl.mustache",
-	   meta => {"dhcp"};
-
-      "/etc/default/isc-dhcp-server.tmpl.mustache" perms => m("444");
-      "/etc/default/isc-dhcp-server"               perms => m("444");
+      "$(template_data[dhcpd_etc_default]).saved_dist_version"
+	copy_from => local_dcp("$(template_data[dhcpd_etc_default])"),
+	   unless => fileexists("$(template_data[dhcpd_etc_default]).saved_dist_version"),
+	  comment => "save dist versionen",
+	     meta => {"dhcp"};
+      "$(template_data[dhcpd_etc_default]).saved_dist_version"
+	    perms => m("444");
+      
+      "$(template_data[dhcpd_conf_file]).saved_dist_version"
+	copy_from => local_dcp("$(template_data[dhcpd_conf_file])"),
+	   unless => fileexists("$(template_data[dhcpd_conf_file]).saved_dist_version"),
+	  comment => "save dist versionen",
+	     meta => {"dhcp"};
 
       #
-      # etcd/dhcp/dhcpd.conf
+      # /etc/default/isc-dhcp-server
+      #
+      "$(template_data[dhcpd_etc_default]).tmpl.mustache"
+	   create => "true",
+    edit_defaults => empty,
+	edit_line => etc_default_isc_dhcpd,
+	     meta => {"dhcp"};
+      "$(template_data[dhcpd_etc_default]).tmpl.mustache"
+	    perms => m("444");
+
+      "$(template_data[dhcpd_etc_default])"
+	   create => "true",
+    edit_defaults => empty,
+  template_method => "mustache",
+    edit_template => "$(template_data[dhcpd_etc_default]).tmpl.mustache",
+	     meta => {"dhcp"};
+      "$(template_data[dhcpd_etc_default])"
+            perms => m("444");
+
+      #
+      # /etc/dhcp/dhcpd.conf
       #
       "$(template_data[dhcpd_conf_file]).tmpl.mustache"
-	 create => "true",
-  edit_defaults => empty,
-      edit_line => dhcpd_conf,
-	   meta => {"dhcp"};
+	   create => "true",
+    edit_defaults => empty,
+	edit_line => etc_dhcp_dhcpd_conf,
+	     meta => {"dhcp"};
+      "$(template_data[dhcpd_conf_file]).tmpl.mustache" 
+	    perms => m("444");
 
       "$(template_data[dhcpd_conf_file])"
-	 create => "true",
-  edit_defaults => empty,
-template_method => "mustache",
-  edit_template => "$(template_data[dhcpd_conf_file]).tmpl.mustache",
-	classes => results("bundle", "dhcpd_conf_changed"),
-	   meta => {"dhcp"};
-
-      "$(template_data[dhcpd_conf_file]).tmpl.mustache" perms => m("444");
-      "$(template_data[dhcpd_conf_file])"               perms => m("444");
+	   create => "true",
+    edit_defaults => empty,
+  template_method => "mustache",
+    edit_template => "$(template_data[dhcpd_conf_file]).tmpl.mustache",
+	  classes => results("bundle", "dhcpd_conf_changed"),
+	     meta => {"dhcp"};
+      "$(template_data[dhcpd_conf_file])"               
+	    perms => m("444");
 
   packages:
     DHCP_server::
       "isc-dhcp-server"
-	 policy => "present",
-	classes => results("namespace", "isc_dhcp_server_installed"),
- package_module => apt_get,
-	   meta => { "dhcp" };
+	   policy => "present",
+	  classes => results("namespace", "isc_dhcp_server_installed"),
+   package_module => apt_get,
+	     meta => { "dhcp" };
 
   services:
     DHCP_server::
       "isc-dhcp-server"
-     ifvarclass => "isc_dhcp_server_installed_repaired",
- service_policy => "enable",
-	   meta => {"dhcp"};
+       ifvarclass => "isc_dhcp_server_installed_repaired",
+   service_policy => "enable",
+	     meta => {"dhcp"};
 
       "isc-dhcp-server"
- service_policy => "restart",
-     ifvarclass => "dhcpd_conf_changed_repaired",
-	   meta => {"dhcp"};
+   service_policy => "restart",
+       ifvarclass => "dhcpd_conf_changed_repaired",
+	     meta => {"dhcp"};
 
   reports:
     verbose_mode|DEBUG|DEBUG_b18steni::
       "$(this.bundle): Hello, this is an automatically loaded bundle";
       "$(this.bundle): isc-dhcpd:s configuration ändrades"
-     ifvarclass => "dhcpd_conf_changed_repaired";
+       ifvarclass => "dhcpd_conf_changed_repaired";
 }
 
-bundle edit_line dhcpd_conf
+bundle edit_line etc_dhcp_dhcpd_conf
 {
   insert_lines:
       "#
@@ -114,25 +117,22 @@ ddns-update-style none;
 
 option routers 192.168.1.1;
 option domain-name \"{{vars.def.domain}}\";
-{{^classes.dhcp_use_my_own_dns}}
+{{^classes.DHCP_use_my_own_dns}}
 option domain-name-servers 10.0.252.201, 10.0.252.201;
-{{/classes.dhcp_use_my_own_dns}}
-{{#classes.dhcp_use_my_own_dns}}
+{{/classes.DHCP_use_my_own_dns}}
+{{#classes.DHCP_use_my_own_dns}}
 option domain-name-servers {{vars.dhcp.template_data.dns_nameserver_my_own}};
-{{/classes.dhcp_use_my_own_dns}}
+{{/classes.DHCP_use_my_own_dns}}
 
 option ntp-servers 194.58.203.20;
 default-lease-time 600;
 max-lease-time 7200;
 
-# If this DHCP server is the official DHCP server for the local
-# network, the authoritative directive should be uncommented.
 authoritative;
 
 # Use this to send dhcp log messages to a different log file (you also
 # have to hack syslog.conf to complete the redirection).
 log-facility local7;
-
 
 {{#classes.static_dhcp_mapping}}
 #
@@ -149,6 +149,7 @@ host {{name}}.{{vars.def.domain}} {
 }
 {{/vars.dhcp.template_data.mac_mappings}}
 {{/classes.static_dhcp_mapping}}
+
 {{^classes.static_dhcp_mapping}}
 #
 # utan static_dhcp_mapping
@@ -161,7 +162,36 @@ subnet 192.168.1.0 netmask 255.255.255.0 {
 ";
 }
 
-bundle edit_line default_isc_dhcp_server
+#
+# klistrar in standard isc-dhcp-server.service för ubuntu:
+#----
+# [Unit]
+# Description=ISC DHCP IPv4 server
+# Documentation=man:dhcpd(8)
+# Wants=network-online.target
+# After=network-online.target
+# After=time-sync.target
+# ConditionPathExists=/etc/default/isc-dhcp-server
+# ConditionPathExists=|/etc/ltsp/dhcpd.conf
+# ConditionPathExists=|/etc/dhcp/dhcpd.conf
+
+# [Service]
+# EnvironmentFile=/etc/default/isc-dhcp-server
+# RuntimeDirectory=dhcp-server
+# # The leases files need to be root:dhcpd even when dropping privileges
+# ExecStart=/bin/sh -ec '\
+#     CONFIG_FILE=/etc/dhcp/dhcpd.conf; \
+#     if [ -f /etc/ltsp/dhcpd.conf ]; then CONFIG_FILE=/etc/ltsp/dhcpd.conf; fi; \
+#     [ -e /var/lib/dhcp/dhcpd.leases ] || touch /var/lib/dhcp/dhcpd.leases; \
+#     chown root:dhcpd /var/lib/dhcp /var/lib/dhcp/dhcpd.leases; \
+#     chmod 775 /var/lib/dhcp ; chmod 664 /var/lib/dhcp/dhcpd.leases; \
+#     exec dhcpd -user dhcpd -group dhcpd -f -4 -lf /var/lib/dhcp/dhcpd.leases -pf /run/dhcp-server/dhcpd.pid -cf $CONFIG_FILE $INTERFACES'
+
+# [Install]
+# WantedBy=multi-user.target
+#----
+
+bundle edit_line etc_default_isc_dhcpd
 {
   insert_lines:
       "#
@@ -180,12 +210,13 @@ bundle edit_line default_isc_dhcp_server
 # DHCPD_CONF={{vars.dhcp.template_data.dhcpd_conf_file}}
 # DHCPD_PID={{vars.dhcp.template_data.dhcpd_pid_file}}
 # DHCPD_LEASE_FILE={{vars.dhcp.template_data.dhcpd_lease_file}}
-OPTIONS={{vars.dhcp.template_data.dhcpd_options}}
+# OPTIONS variabeln stöds ej av systemd:s konfiguartionsfil för isc-dhcp-server (isc-dhcp-server.service)
+# OPTIONS={{vars.dhcp.template_data.dhcpd_options}} 
 INTERFACES={{vars.dhcp.template_data.dhcpd_listen_iface}}
 ";
 }
 
 # Local Variables:
-# mode:cfengine
-# cfengine-parameters-indent: (promise arrow 10)
+# mode: cfengine
+# cfengine-parameters-indent: (promise arrow 12)
 # End:

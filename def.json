@@ -1,6 +1,7 @@
 {
     "vars": {
-	"timestamp": "Time-stamp: <2019-05-09 21:23:03 nsa>",
+	"timestamp": "Time-stamp: <2019-05-09 21:47:57 nsa>",
+	"default_data_select_comment": "rapportering",
 	"default_data_select_host_monitoring_include":       [ ".*" ],
 	"default_data_select_policy_hub_monitoring_include": [ ".*" ],
 
@@ -39,7 +40,7 @@
 				      "webserver01" ],
 	"yum_check_update_disabled": [ "cfengine_b18steni_it119g_nsa_his_se"
 				     ],
-	"yum_upgrade_disabled":      [ "cfengine_b18steni_it119g_nsa_his_se",
+	"yum_upgrade_disabled":      [ "cfengine_b18steni_it119g_nsa_his_se"
 				     ],
 	"WWW_services": [ "webserver01" ],
 
