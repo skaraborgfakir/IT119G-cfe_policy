@@ -1,6 +1,6 @@
 # -*-cfengine-*-
 #
-# Time-stamp: <2019-03-21 16:19:05 nsa>
+# Time-stamp: <2019-05-09 20:18:58 nsa>
 #
 # garantera datakom-användarens grupp och lösenord
 #
@@ -35,5 +35,5 @@ body password datakom_password
 }
 
 # Local Variables:
-# mode:cfengine
+# mode: cfengine
 # End:
